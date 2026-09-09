@@ -1,6 +1,6 @@
 import { AppShell } from "@/components/app/AppShell";
 import { madridNowLabel } from "@/lib/clock";
-import { parseDay, parseDone, parseTab } from "@/lib/nav";
+import { parseDay, parseDone, parseOpen, parseTab } from "@/lib/nav";
 
 export const dynamic = "force-dynamic";
 
@@ -11,6 +11,7 @@ export default async function Home({
     tab?: string | string[];
     day?: string | string[];
     done?: string | string[];
+    open?: string | string[];
   }>;
 }) {
   const sp = await searchParams;
@@ -20,6 +21,7 @@ export default async function Home({
       day={parseDay(sp.day)}
       allDone={parseDone(sp.done)}
       clock={madridNowLabel()}
+      open={parseOpen(sp.open)}
     />
   );
 }

@@ -13,7 +13,13 @@ type Ctx = {
   allDone: Record<DayId, number[]>;
   dayMeta: (typeof DAYS)[DayId];
   clock: string;
-  link: (tab?: TabId, day?: DayId, done?: Record<DayId, number[]>) => string;
+  open: number | null;
+  link: (
+    tab?: TabId,
+    day?: DayId,
+    done?: Record<DayId, number[]>,
+    open?: number | null
+  ) => string;
 };
 
 const VisitContext = createContext<Ctx | null>(null);
@@ -23,12 +29,14 @@ export function VisitProvider({
   day,
   allDone,
   clock,
+  open,
   children,
 }: {
   tab: TabId;
   day: DayId;
   allDone: Record<DayId, number[]>;
   clock: string;
+  open: number | null;
   children: ReactNode;
 }) {
   const value: Ctx = {
@@ -38,7 +46,9 @@ export function VisitProvider({
     allDone,
     dayMeta: DAYS[day],
     clock,
-    link: (t = tab, d = day, done = allDone) => href(t, d, done),
+    open,
+    link: (t = tab, d = day, done = allDone, step = null) =>
+      href(t, d, done, step),
   };
   return <VisitContext.Provider value={value}>{children}</VisitContext.Provider>;
 }

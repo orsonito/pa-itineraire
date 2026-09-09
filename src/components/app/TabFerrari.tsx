@@ -6,10 +6,9 @@ import { href } from "@/lib/nav";
 import { cn } from "@/lib/utils";
 import { NavLink } from "./NavLink";
 import { useVisit } from "./VisitProvider";
-import { ChevronDown } from "lucide-react";
 
 export function TabFerrari() {
-  const { allDone } = useVisit();
+  const { allDone, open } = useVisit();
   return (
     <div className="space-y-4">
       <div className="rounded-2xl bg-red-800 p-4 text-white">
@@ -30,35 +29,45 @@ export function TabFerrari() {
       </div>
 
       <ol className="space-y-2">
-        {FERRARI_LAND.itinerary.map((r) => (
-          <li key={r.name + r.hour}>
-            <details className="group rounded-2xl bg-white ring-1 ring-zinc-200">
-              <summary className="flex cursor-pointer touch-manipulation list-none gap-3 p-3 text-left [&::-webkit-details-marker]:hidden">
-                <div className="w-14 shrink-0 text-[16px] font-bold tabular-nums">
-                  {r.hour}
-                </div>
-                <div className="min-w-0 flex-1">
-                  <div className={cn("text-[15px]", r.priority && "font-bold")}>
-                    {r.name}
+        {FERRARI_LAND.itinerary.map((r, i) => {
+          const isOpen = open === i;
+          return (
+            <li key={r.name + r.hour} id={`paso-${i}`} className="scroll-mt-28">
+              <NavLink
+                href={href("ferrari", "mon", allDone, isOpen ? null : i)}
+                ariaCurrent={isOpen ? "page" : undefined}
+                className={cn(
+                  "flex w-full cursor-pointer touch-manipulation flex-col rounded-2xl text-left ring-1",
+                  isOpen
+                    ? "bg-red-50 p-3 ring-2 ring-red-700"
+                    : "bg-white p-3 ring-zinc-200"
+                )}
+              >
+                <div className="flex gap-3">
+                  <div className="w-14 shrink-0 text-[16px] font-bold tabular-nums">
+                    {r.hour}
                   </div>
-                  <div className="text-[13px] font-semibold text-zinc-800">
-                    {r.wait} min
+                  <div className="min-w-0 flex-1">
+                    <div
+                      className={cn("text-[15px]", r.priority && "font-bold")}
+                    >
+                      {r.name}
+                    </div>
+                    <div className="text-[13px] font-semibold text-zinc-800">
+                      {r.wait} min
+                    </div>
                   </div>
                 </div>
-                <ChevronDown
-                  className="mt-1 size-5 shrink-0 text-zinc-400 transition-transform duration-200 group-open:rotate-180"
-                  aria-hidden
-                />
-              </summary>
-              <div className="space-y-1 border-t border-zinc-200 px-3 pb-3 pt-2">
-                <p className="text-[13px] leading-snug text-zinc-700">
-                  {r.note ??
-                    "Express 10 de PortAventura no vale aquí. Cola estimada."}
-                </p>
-              </div>
-            </details>
-          </li>
-        ))}
+                {isOpen && (
+                  <p className="mt-3 border-t border-red-800/15 pt-3 text-[13px] leading-snug text-zinc-700">
+                    {r.note ??
+                      "Express 10 de PortAventura no vale aquí. Cola estimada."}
+                  </p>
+                )}
+              </NavLink>
+            </li>
+          );
+        })}
       </ol>
 
       <div>

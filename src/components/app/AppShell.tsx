@@ -88,14 +88,22 @@ export function AppShell({
   day,
   allDone,
   clock,
+  open,
 }: {
   tab: TabId;
   day: DayId;
   allDone: Record<DayId, number[]>;
   clock: string;
+  open: number | null;
 }) {
   return (
-    <VisitProvider tab={tab} day={day} allDone={allDone} clock={clock}>
+    <VisitProvider
+      tab={tab}
+      day={day}
+      allDone={allDone}
+      clock={clock}
+      open={open}
+    >
       <Screen />
     </VisitProvider>
   );

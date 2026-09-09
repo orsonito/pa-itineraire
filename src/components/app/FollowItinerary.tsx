@@ -1,18 +1,13 @@
 "use client";
 
 import { ITINERARIES, type ItineraryStep, type StepKind } from "@/data/itineraries";
-import { withDone } from "@/lib/nav";
 import { cn } from "@/lib/utils";
 import {
-  Check,
-  ChevronDown,
   Drama,
   FerrisWheel,
   Footprints,
   Info,
-  RotateCcw,
   Ticket,
-  Undo2,
   Utensils,
 } from "lucide-react";
 import { ExpressTag, NoExpressTag } from "./ExpressTag";
@@ -47,12 +42,8 @@ const SUBTITLES: Record<string, string> = {
 };
 
 export function FollowItinerary() {
-  const { tab, day, dayMeta, done, allDone, link } = useVisit();
+  const { tab, day, dayMeta, allDone, link, open } = useVisit();
   const steps = ITINERARIES[day];
-  const doneSet = new Set(done);
-  const nextIdx = steps.findIndex((_, i) => !doneSet.has(i));
-  const undoHref = link(tab, day, withDone(allDone, day, done.slice(0, -1)));
-  const resetHref = link(tab, day, withDone(allDone, day, []));
   const shows = steps.filter(
     (s) => s.kind === "show" || s.title.includes("Día de los Muertos")
   );
@@ -94,54 +85,14 @@ export function FollowItinerary() {
         ¿Qué hago ahora?
       </NavLink>
 
-      <div className="flex gap-2">
-        {done.length === 0 ? (
-          <span className="flex min-h-11 flex-1 items-center justify-center gap-1 rounded-xl bg-white text-[13px] font-semibold ring-1 ring-zinc-200 opacity-40">
-            <Undo2 className="size-4" />
-            Deshacer
-          </span>
-        ) : (
-          <NavLink
-            href={undoHref}
-            className="flex min-h-11 flex-1 cursor-pointer touch-manipulation items-center justify-center gap-1 rounded-xl bg-white text-[13px] font-semibold ring-1 ring-zinc-200"
-          >
-            <Undo2 className="size-4" />
-            Deshacer
-          </NavLink>
-        )}
-        <NavLink
-          href={resetHref}
-          className="flex min-h-11 flex-1 cursor-pointer touch-manipulation items-center justify-center gap-1 rounded-xl bg-white text-[13px] font-semibold ring-1 ring-zinc-200"
-        >
-          <RotateCcw className="size-4" />
-          Reiniciar día
-        </NavLink>
-      </div>
-
-      <p className="text-center text-[11px] text-zinc-500">
-        Toca un paso para ver la nota. Hecho está dentro.
-      </p>
-
       <ol className="space-y-2">
         {steps.map((s, i) => (
           <StepRow
             key={`${s.time}-${i}`}
             step={s}
-            doneHref={
-              doneSet.has(i)
-                ? link(
-                    tab,
-                    day,
-                    withDone(
-                      allDone,
-                      day,
-                      done.filter((x) => x !== i)
-                    )
-                  )
-                : link(tab, day, withDone(allDone, day, [...done, i]))
-            }
-            nextUp={i === nextIdx}
-            done={doneSet.has(i)}
+            index={i}
+            open={open === i}
+            href={link(tab, day, allDone, open === i ? null : i)}
             sunday={day === "sun"}
           />
         ))}
@@ -152,29 +103,31 @@ export function FollowItinerary() {
 
 function StepRow({
   step,
-  nextUp,
-  done,
-  doneHref,
+  index,
+  open,
+  href: rowHref,
   sunday,
 }: {
   step: ItineraryStep;
-  nextUp: boolean;
-  done: boolean;
-  doneHref: string;
+  index: number;
+  open: boolean;
+  href: string;
   sunday: boolean;
 }) {
   const Icon = ICONS[step.kind];
   return (
-    <li>
-      <details
+    <li id={`paso-${index}`} className="scroll-mt-28">
+      <NavLink
+        href={rowHref}
+        ariaCurrent={open ? "page" : undefined}
         className={cn(
-          "group rounded-2xl ring-1 open:pb-0",
-          nextUp && "bg-teal-50 ring-2 ring-teal-700",
-          done && "bg-zinc-100 ring-zinc-200 opacity-80",
-          !nextUp && !done && "bg-white ring-zinc-200"
+          "flex w-full cursor-pointer touch-manipulation flex-col rounded-2xl text-left ring-1 transition-[padding,box-shadow]",
+          open
+            ? "bg-teal-50 p-3 ring-2 ring-teal-700"
+            : "bg-white p-3 ring-zinc-200"
         )}
       >
-        <summary className="flex cursor-pointer touch-manipulation list-none gap-2 p-3 text-left [&::-webkit-details-marker]:hidden">
+        <div className="flex gap-2">
           <ZoneBar zone={step.zone} />
           <div className="w-12 shrink-0 pt-0.5 text-right">
             <div className="text-[15px] font-bold tabular-nums">{step.time}</div>
@@ -189,7 +142,7 @@ function StepRow({
                   : "bg-zinc-200 text-zinc-700"
             )}
           >
-            {done ? <Check className="size-4" /> : <Icon className="size-4" />}
+            <Icon className="size-4" />
           </div>
           <div className="min-w-0 flex-1">
             <div className="flex flex-wrap items-center gap-1">
@@ -211,73 +164,56 @@ function StepRow({
                   SHOW
                 </span>
               )}
-              {nextUp && (
-                <span className="text-[10px] font-bold text-teal-800">
-                  SIGUIENTE
-                </span>
-              )}
             </div>
             {step.zone && (
               <div className="mt-1">
                 <ZoneTag
                   zone={step.zone}
                   action={zoneAction(step.kind, step.title)}
-                  strong={nextUp}
+                  strong={open}
                 />
               </div>
             )}
           </div>
-          <ChevronDown
-            className="mt-2 size-5 shrink-0 text-zinc-400 transition-transform duration-200 group-open:rotate-180"
-            aria-hidden
-          />
-        </summary>
-        <div className="space-y-2 border-t border-zinc-200/80 px-3 pb-3 pt-2">
-          <div className="text-[11px] font-semibold tracking-wide text-zinc-500 uppercase">
-            {KIND_LABEL[step.kind]}
-          </div>
-          {step.wait && (
-            <div className="text-[14px] font-semibold text-zinc-800">
-              Cola est. {step.wait}
-            </div>
-          )}
-          {step.walk && (
-            <div className="flex items-start gap-2 text-[13px] text-zinc-600">
-              <Footprints className="mt-0.5 size-4 shrink-0" />
-              <span>
-                {step.walk}
-                {step.next ? ` → ${step.next}` : ""}
-              </span>
-            </div>
-          )}
-          {step.note && (
-            <p className="text-[13px] leading-snug text-zinc-700">{step.note}</p>
-          )}
-          {step.express && (
-            <p className="text-[12px] font-semibold text-amber-800">
-              Usa Express 10
-              {step.expressUse ? ` · uso ${step.expressUse}/9` : ""}.
-            </p>
-          )}
-          {!step.note && !step.wait && !step.walk && (
-            <p className="text-[13px] text-zinc-500">
-              Sigue el orden de la ruta. Sin nota extra en este paso.
-            </p>
-          )}
-          <NavLink
-            href={doneHref}
-            className={cn(
-              "mt-1 flex min-h-11 w-full cursor-pointer touch-manipulation items-center justify-center gap-2 rounded-xl text-[14px] font-bold",
-              done
-                ? "bg-white text-zinc-700 ring-1 ring-zinc-300"
-                : "bg-amber-400 text-teal-950"
-            )}
-          >
-            <Check className="size-4" />
-            {done ? "Desmarcar" : "Hecho"}
-          </NavLink>
         </div>
-      </details>
+        {open && (
+          <div className="mt-3 space-y-2 border-t border-teal-800/15 pt-3 pl-[3.25rem]">
+            <div className="text-[11px] font-semibold tracking-wide text-teal-800 uppercase">
+              {KIND_LABEL[step.kind]}
+            </div>
+            {step.wait && (
+              <div className="text-[14px] font-semibold text-zinc-800">
+                Cola est. {step.wait}
+              </div>
+            )}
+            {step.walk && (
+              <div className="flex items-start gap-2 text-[13px] text-zinc-600">
+                <Footprints className="mt-0.5 size-4 shrink-0" />
+                <span>
+                  {step.walk}
+                  {step.next ? ` → ${step.next}` : ""}
+                </span>
+              </div>
+            )}
+            {step.note && (
+              <p className="text-[13px] leading-snug text-zinc-700">
+                {step.note}
+              </p>
+            )}
+            {step.express && (
+              <p className="text-[12px] font-semibold text-amber-800">
+                Usa Express 10
+                {step.expressUse ? ` · uso ${step.expressUse}/9` : ""}.
+              </p>
+            )}
+            {!step.note && !step.wait && !step.walk && (
+              <p className="text-[13px] text-zinc-500">
+                Sigue el orden de la ruta. Sin nota extra en este paso.
+              </p>
+            )}
+          </div>
+        )}
+      </NavLink>
     </li>
   );
 }

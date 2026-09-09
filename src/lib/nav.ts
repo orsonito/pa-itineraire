@@ -24,6 +24,14 @@ export function parseDay(v: string | string[] | undefined): DayId {
   return "sun";
 }
 
+export function parseOpen(v: string | string[] | undefined): number | null {
+  const raw = first(v);
+  if (raw == null || raw === "") return null;
+  const n = Number(raw);
+  if (!Number.isInteger(n) || n < 0) return null;
+  return n;
+}
+
 export function parseDone(
   v: string | string[] | undefined
 ): Record<DayId, number[]> {
@@ -58,10 +66,14 @@ export function withDone(
 export function href(
   tab: TabId,
   day: DayId,
-  done: Record<DayId, number[]> = EMPTY_DONE
+  done: Record<DayId, number[]> = EMPTY_DONE,
+  open?: number | null
 ): string {
   const q = new URLSearchParams({ tab, day });
   const packed = serializeDone(done);
   if (packed) q.set("done", packed);
-  return `/?${q.toString()}`;
+  if (open != null && open >= 0) q.set("open", String(open));
+  const path = `/?${q.toString()}`;
+  if (open != null && open >= 0) return `${path}#paso-${open}`;
+  return path;
 }
