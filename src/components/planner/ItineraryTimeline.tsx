@@ -26,7 +26,7 @@ const ICONS = {
 
 const SUBTITLES: Record<DayId, string> = {
   sun: "Hotel El Paso · Express 10 · Uncharted / Hurakan / Street sin Express",
-  mon: "El Paso → Furius a la puerta · Ferrari Land 16:30–22:00",
+  mon: "El Paso → PA hasta 18:00 · Ferrari Land 18:10–22:00",
   tue: "Check-out El Paso · Uncharted 10:30 · cierre 18:00",
 };
 

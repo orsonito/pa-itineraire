@@ -6,68 +6,55 @@ export type FerrariRide = {
   note?: string;
 };
 
-/** Ferrari Land — lunes 21, 16:30–22:00. Express 10 de PA NO sirve. */
+/** Ferrari Land — lunes 21, 16:30–22:00. Entras ~18:10 (tras cierre de PA). Express 10 de PA NO sirve. */
 export const FERRARI_LAND = {
   recommendedDay: "Lunes 21/09/2026",
-  hours: "16:30–22:00",
+  hours: "16:30–22:00 (tú: ~18:10–22:00)",
   crowdQueueTimes: 55,
   crowdMon: 55,
   crowdSun: 55,
   crowdTue: 53,
   why: [
     "El domingo tienes Express 10 solo para PortAventura y el parque cierra a las 19:00: no lo recortes.",
-    "Ferrari Land abre a las 16:30 los tres días (previsión Queue-Times / Pafans), así que encaja al final de un día de PortAventura.",
+    "El lunes PortAventura cierra a las 18:00: se aprovecha entero. Ferrari Land abre 16:30, pero entras al cierre de PA.",
+    "Red Force a las 18:00 es el peor rato (~55 min, entra la gente de PA). A las 21:00 baja a ~20 min: esa es tu pasada.",
     "El martes es el día más flojo de PortAventura (~24 %): más rentable dejárselo entero al parque grande, sin Express.",
-    "Parque Temático, visita de 3 días: día 1 PA · día 2 PA mañana + Ferrari Land tarde · día 3 PA.",
     "Afluencia Ferrari Land casi igual los tres días (55 / 55 / 53 %). La diferencia la marca el Express del domingo y el martes flojo de PA, no Ferrari Land.",
   ],
   itinerary: [
     {
-      name: "Red Force",
-      priority: true,
-      hour: "16:30",
-      wait: 40,
-      note: "Entra al abrir. No uses Express de PortAventura (no vale). Última hora ~20 min si quieres repetir.",
-    },
-    {
-      name: "Flying Dreams",
-      hour: "17:20",
-      wait: 35,
+      name: "Racing Legends",
+      hour: "18:15",
+      wait: 30,
+      note: "Entras al cierre de PortAventura. No hagas Red Force ahora (~55 min).",
     },
     {
       name: "Thrill Towers",
-      hour: "18:05",
+      hour: "18:50",
+      wait: 30,
+    },
+    {
+      name: "Flying Dreams",
+      hour: "19:25",
       wait: 35,
-      note: "Pico cuando cierra PortAventura (~18:00) y entra gente al recinto.",
     },
     {
       name: "Maranello Grand Race",
-      hour: "18:45",
-      wait: 40,
-    },
-    {
-      name: "Racing Legends",
-      hour: "19:30",
+      hour: "20:05",
       wait: 25,
     },
     {
       name: "Ferrari Experience / Gallery",
-      hour: "20:05",
-      wait: 30,
-      note: "Cola tipo exposición; media 2026 Queue-Times 47 min (días más llenos). Aquí, estimación a la baja.",
-    },
-    {
-      name: "Junior Red Force / Crazy Pistons",
       hour: "20:40",
-      wait: 10,
-      note: "Familiares. Opcional.",
+      wait: 20,
+      note: "Cola tipo exposición. Si no te interesa, ve a Red Force.",
     },
     {
-      name: "Red Force (repetición)",
+      name: "Red Force",
       priority: true,
-      hour: "21:00",
+      hour: "21:10",
       wait: 20,
-      note: "Mejor ventana del día según patrón horario de septiembre (Wartezeiten 2025: 21:00–22:00 cae a ~47 min de media mensual; en un día ~55 % baja más).",
+      note: "Mejor ventana. A las 16:30 eran ~40 min y a las 18:00 ~55. Cierre de colas 22:00.",
     },
   ] satisfies FerrariRide[],
 };

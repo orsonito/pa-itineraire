@@ -41,7 +41,7 @@ export function TabDias() {
                 )}
               >
                 {d.parkHours} · {d.express ? "Express 10" : "sin Express"}
-                {id === "mon" ? " · Ferrari Land 16:30" : ""}
+                {id === "mon" ? " · PA hasta 18:00 + Ferrari noche" : ""}
               </div>
             </NavLink>
           );

@@ -159,9 +159,9 @@ export function Planner() {
         <section id="lunes" className="scroll-mt-28 space-y-3">
           <DayHeading id="mon" />
           <p className="text-[13px] text-zinc-600">
-            Sin Express. Celdas en minutos de cola normal. Mañana en
-            PortAventura; a las 15:50 sales a Ferrari Land (abre 16:30). El
-            itinerario de abajo incluye las dos partes.
+            Sin Express. Celdas en minutos de cola normal. PortAventura
+            entero hasta las 18:00; Ferrari Land al cierre (Red Force a las
+            21:10, no al abrir).
           </p>
           <WaitTable day="mon" />
           <ItineraryTimeline day="mon" title="Itinerario óptimo · lunes 21" />
@@ -188,8 +188,8 @@ export function Planner() {
             <p className="text-[13px] text-zinc-600">
               Mismo formato los tres días: hora → atracción → zona → cola →
               desplazamiento → siguiente. Domingo con Express 10. Lunes sin
-              Express y Ferrari Land por la tarde. Martes, el más flojo, día
-              entero en PortAventura.
+              Express. Lunes: PortAventura hasta el cierre y Ferrari Land por
+              la noche. Martes, el más flojo, día entero en PortAventura.
             </p>
           </div>
           <ItineraryTimeline day="sun" title="Domingo 20 · Express 10" />

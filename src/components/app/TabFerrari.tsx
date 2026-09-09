@@ -13,7 +13,7 @@ export function TabFerrari() {
     <div className="space-y-4">
       <div className="rounded-2xl bg-red-800 p-4 text-white">
         <div className="text-[11px] font-semibold tracking-wide text-red-200 uppercase">
-          Solo el lunes 21
+          Solo el lunes 21 · después del cierre de PA
         </div>
         <h2 className="mt-1 text-2xl font-bold">Ferrari Land</h2>
         <p className="mt-1 text-[14px] text-red-100">
