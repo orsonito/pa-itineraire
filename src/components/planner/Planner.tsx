@@ -1,7 +1,6 @@
 "use client";
 
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { FERRARI_LAND, FERRARI_MATRIX } from "@/data/ferrari";
@@ -21,7 +20,6 @@ import { cn } from "@/lib/utils";
 import { GlobalMatrix } from "./GlobalMatrix";
 import { ItineraryTimeline } from "./ItineraryTimeline";
 import { WaitTable } from "./WaitTable";
-import { useState } from "react";
 
 const NAV: { id: string; label: string }[] = [
   { id: "resumen", label: "Resumen" },
@@ -35,7 +33,6 @@ const NAV: { id: string; label: string }[] = [
 ];
 
 export function Planner() {
-  const [day, setDay] = useState<DayId>("sun");
   const savings = expressSavings();
   const peak = peakIfNoExpress();
 
@@ -156,24 +153,28 @@ export function Planner() {
           </p>
           <WaitTable day="sun" />
           <ExpressPanel savings={savings} peak={peak} />
+          <ItineraryTimeline day="sun" title="Itinerario óptimo · domingo 20" />
         </section>
 
         <section id="lunes" className="scroll-mt-28 space-y-3">
           <DayHeading id="mon" />
           <p className="text-[13px] text-zinc-600">
             Sin Express. Celdas en minutos de cola normal. Mañana en
-            PortAventura; Ferrari Land a las 16:30.
+            PortAventura; a las 15:50 sales a Ferrari Land (abre 16:30). El
+            itinerario de abajo incluye las dos partes.
           </p>
           <WaitTable day="mon" />
+          <ItineraryTimeline day="mon" title="Itinerario óptimo · lunes 21" />
         </section>
 
         <section id="martes" className="scroll-mt-28 space-y-3">
           <DayHeading id="tue" />
           <p className="text-[13px] text-zinc-600">
-            Día más flojo y sin Express. Mejor día para repeticiones y para lo
-            que no esté en Express 10.
+            Día más flojo y sin Express. Día entero en PortAventura. Mejor
+            Uncharted de los tres a primera hora (junto con las 17:00).
           </p>
           <WaitTable day="tue" />
+          <ItineraryTimeline day="tue" title="Itinerario óptimo · martes 22" />
         </section>
 
         <section id="comparativa" className="scroll-mt-28 space-y-3">
@@ -181,27 +182,19 @@ export function Planner() {
           <GlobalMatrix />
         </section>
 
-        <section id="itinerarios" className="scroll-mt-28 space-y-4">
-          <h2 className="text-xl font-bold">Itinerario óptimo</h2>
-          <p className="text-[13px] text-zinc-600">
-            Orden pensado para no cruzar el parque en zigzag y para no gastar el
-            Express a las 10:30 en atracciones que a esa hora ya están vacías.
-            Domingo: Uncharted (sin Express) al abrir; Express en el pico de
-            Furius/Shambhala/Khan; Hurakan y Street a última hora.
-          </p>
-          <div className="flex gap-2">
-            {(Object.keys(DAYS) as DayId[]).map((id) => (
-              <Button
-                key={id}
-                size="sm"
-                variant={day === id ? "default" : "outline"}
-                onClick={() => setDay(id)}
-              >
-                {DAYS[id].label}
-              </Button>
-            ))}
+        <section id="itinerarios" className="scroll-mt-28 space-y-6">
+          <div>
+            <h2 className="text-xl font-bold">Itinerarios óptimos · los tres días</h2>
+            <p className="text-[13px] text-zinc-600">
+              Mismo formato los tres días: hora → atracción → zona → cola →
+              desplazamiento → siguiente. Domingo con Express 10. Lunes sin
+              Express y Ferrari Land por la tarde. Martes, el más flojo, día
+              entero en PortAventura.
+            </p>
           </div>
-          <ItineraryTimeline day={day} />
+          <ItineraryTimeline day="sun" title="Domingo 20 · Express 10" />
+          <ItineraryTimeline day="mon" title="Lunes 21 · PA + Ferrari Land" />
+          <ItineraryTimeline day="tue" title="Martes 22 · PortAventura entero" />
         </section>
 
         <section id="ferrari" className="scroll-mt-28 space-y-3">

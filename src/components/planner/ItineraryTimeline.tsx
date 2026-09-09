@@ -21,19 +21,27 @@ const ICONS = {
   ride: FerrisWheel,
 } as const;
 
-export function ItineraryTimeline({ day }: { day: DayId }) {
+const SUBTITLES: Record<DayId, string> = {
+  sun: "Uncharted al abrir · Express en el pico · Hurakan y Street a última hora",
+  mon: "Sin Express · PortAventura hasta las 15:50 · Ferrari Land 16:30–22:00",
+  tue: "Día más flojo · Uncharted a las 10:30 · cierre 18:00 · sin Ferrari Land",
+};
+
+export function ItineraryTimeline({
+  day,
+  title,
+}: {
+  day: DayId;
+  title?: string;
+}) {
   const steps = ITINERARIES[day];
   return (
     <Card className="border-zinc-200 shadow-sm">
       <CardHeader className="pb-3">
         <CardTitle className="text-base">
-          Itinerario hora a hora
-          {day === "sun" && (
-            <span className="ml-2 text-sm font-normal text-zinc-500">
-              · Uncharted / Hurakan / Street primero o al final · Express en el pico
-            </span>
-          )}
+          {title ?? "Itinerario hora a hora"}
         </CardTitle>
+        <p className="text-[12px] font-normal text-zinc-500">{SUBTITLES[day]}</p>
       </CardHeader>
       <CardContent className="space-y-0">
         {steps.map((step, i) => (
