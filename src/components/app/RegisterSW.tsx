@@ -26,3 +26,5 @@ export function RegisterSW() {
   }, []);
   return null;
 }
+
+export default RegisterSW;

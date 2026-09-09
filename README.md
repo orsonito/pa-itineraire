@@ -13,6 +13,16 @@ npm run dev
 
 Abre [http://localhost:43123](http://localhost:43123).
 
+## Plantilla
+
+Basada en [my-next-template](https://github.com/orsonito/my-next-template): generadores de componentes/páginas, iconos PWA y cliente HTTP.
+
+```bash
+npm run g:c Nombre      # componente cliente en src/components
+npm run g:p Nombre      # página en src/app
+npm run pwa:icons       # iconos PWA
+```
+
 ### Instalar en el móvil
 
 1. Abre la URL en Safari (iPhone) o Chrome (Android).

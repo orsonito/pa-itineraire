@@ -6,10 +6,14 @@
     "dev": "next dev --port 43123 --hostname 0.0.0.0",
     "build": "next build",
     "start": "next start --port 43123 --hostname 0.0.0.0",
-    "lint": "eslint"
+    "lint": "eslint",
+    "pwa:icons": "node scripts/generate-pwa-icons.mjs",
+    "g:c": "bash scripts/create-component.sh c",
+    "g:p": "bash scripts/create-component.sh p"
   },
   "dependencies": {
     "@base-ui/react": "^1.8.0",
+    "axios": "^1.20.0",
     "class-variance-authority": "^0.7.1",
     "cn": "^0.2.6",
     "lucide-react": "^1.43.0",
@@ -26,6 +30,7 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.3.4",
+    "sharp": "^0.34.5",
     "tailwindcss": "^4",
     "typescript": "^5"
   }
