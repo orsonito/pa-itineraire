@@ -6,6 +6,7 @@ import { href } from "@/lib/nav";
 import { cn } from "@/lib/utils";
 import { NavLink } from "./NavLink";
 import { useVisit } from "./VisitProvider";
+import { ChevronDown } from "lucide-react";
 
 export function TabFerrari() {
   const { allDone } = useVisit();
@@ -30,24 +31,32 @@ export function TabFerrari() {
 
       <ol className="space-y-2">
         {FERRARI_LAND.itinerary.map((r) => (
-          <li
-            key={r.name + r.hour}
-            className="flex gap-3 rounded-2xl bg-white p-3 ring-1 ring-zinc-200"
-          >
-            <div className="w-14 shrink-0 text-[16px] font-bold tabular-nums">
-              {r.hour}
-            </div>
-            <div>
-              <div className={cn("text-[15px]", r.priority && "font-bold")}>
-                {r.name}
+          <li key={r.name + r.hour}>
+            <details className="group rounded-2xl bg-white ring-1 ring-zinc-200">
+              <summary className="flex cursor-pointer touch-manipulation list-none gap-3 p-3 text-left [&::-webkit-details-marker]:hidden">
+                <div className="w-14 shrink-0 text-[16px] font-bold tabular-nums">
+                  {r.hour}
+                </div>
+                <div className="min-w-0 flex-1">
+                  <div className={cn("text-[15px]", r.priority && "font-bold")}>
+                    {r.name}
+                  </div>
+                  <div className="text-[13px] font-semibold text-zinc-800">
+                    {r.wait} min
+                  </div>
+                </div>
+                <ChevronDown
+                  className="mt-1 size-5 shrink-0 text-zinc-400 transition-transform duration-200 group-open:rotate-180"
+                  aria-hidden
+                />
+              </summary>
+              <div className="space-y-1 border-t border-zinc-200 px-3 pb-3 pt-2">
+                <p className="text-[13px] leading-snug text-zinc-700">
+                  {r.note ??
+                    "Express 10 de PortAventura no vale aquí. Cola estimada."}
+                </p>
               </div>
-              <div className="text-[13px] font-semibold text-zinc-800">
-                {r.wait} min
-              </div>
-              {r.note && (
-                <p className="mt-0.5 text-[12px] text-zinc-500">{r.note}</p>
-              )}
-            </div>
+            </details>
           </li>
         ))}
       </ol>

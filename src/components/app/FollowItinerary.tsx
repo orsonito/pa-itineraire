@@ -1,10 +1,11 @@
 "use client";
 
-import { ITINERARIES, type ItineraryStep } from "@/data/itineraries";
+import { ITINERARIES, type ItineraryStep, type StepKind } from "@/data/itineraries";
 import { withDone } from "@/lib/nav";
 import { cn } from "@/lib/utils";
 import {
   Check,
+  ChevronDown,
   Drama,
   FerrisWheel,
   Footprints,
@@ -29,6 +30,15 @@ const ICONS = {
   ride: FerrisWheel,
   show: Drama,
 } as const;
+
+const KIND_LABEL: Record<StepKind, string> = {
+  ride: "Atracción",
+  walk: "Desplazamiento",
+  break: "Comida / descanso",
+  note: "Aviso",
+  park: "Parque",
+  show: "Espectáculo",
+};
 
 const SUBTITLES: Record<string, string> = {
   sun: "Express 10 · tag ámbar = úsalo · Uncharted / Hurakan / Street sin Express",
@@ -108,12 +118,16 @@ export function FollowItinerary() {
         </NavLink>
       </div>
 
+      <p className="text-center text-[11px] text-zinc-500">
+        Toca un paso para ver la nota. Hecho está dentro.
+      </p>
+
       <ol className="space-y-2">
         {steps.map((s, i) => (
           <StepRow
             key={`${s.time}-${i}`}
             step={s}
-            href={
+            doneHref={
               doneSet.has(i)
                 ? link(
                     tab,
@@ -140,91 +154,130 @@ function StepRow({
   step,
   nextUp,
   done,
-  href: rowHref,
+  doneHref,
   sunday,
 }: {
   step: ItineraryStep;
   nextUp: boolean;
   done: boolean;
-  href: string;
+  doneHref: string;
   sunday: boolean;
 }) {
   const Icon = ICONS[step.kind];
   return (
     <li>
-      <NavLink
-        href={rowHref}
+      <details
         className={cn(
-          "flex w-full cursor-pointer touch-manipulation gap-2 rounded-2xl p-3 text-left ring-1",
+          "group rounded-2xl ring-1 open:pb-0",
           nextUp && "bg-teal-50 ring-2 ring-teal-700",
-          done && "bg-zinc-100 ring-zinc-200 opacity-70",
+          done && "bg-zinc-100 ring-zinc-200 opacity-80",
           !nextUp && !done && "bg-white ring-zinc-200"
         )}
       >
-        <ZoneBar zone={step.zone} />
-        <div className="w-12 shrink-0 pt-0.5 text-right">
-          <div className="text-[15px] font-bold tabular-nums">{step.time}</div>
-        </div>
-        <div
-          className={cn(
-            "flex size-9 shrink-0 items-center justify-center rounded-full",
-            step.express
-              ? "bg-amber-400 text-teal-950"
-              : step.priority
-                ? "bg-teal-800 text-white"
-                : "bg-zinc-200 text-zinc-700"
-          )}
-        >
-          {done ? <Check className="size-4" /> : <Icon className="size-4" />}
-        </div>
-        <div className="min-w-0 flex-1">
-          <div className="flex flex-wrap items-center gap-1">
-            <span
-              className={cn(
-                "text-[15px] leading-tight",
-                (step.priority || step.express) && "font-bold"
-              )}
-            >
-              {step.title}
-            </span>
-            {step.express ? (
-              <ExpressTag n={step.expressUse} />
-            ) : sunday && step.kind === "ride" ? (
-              <NoExpressTag />
-            ) : null}
-            {step.kind === "show" && (
-              <span className="text-[10px] font-bold text-fuchsia-800">
-                SHOW
-              </span>
+        <summary className="flex cursor-pointer touch-manipulation list-none gap-2 p-3 text-left [&::-webkit-details-marker]:hidden">
+          <ZoneBar zone={step.zone} />
+          <div className="w-12 shrink-0 pt-0.5 text-right">
+            <div className="text-[15px] font-bold tabular-nums">{step.time}</div>
+          </div>
+          <div
+            className={cn(
+              "flex size-9 shrink-0 items-center justify-center rounded-full",
+              step.express
+                ? "bg-amber-400 text-teal-950"
+                : step.priority
+                  ? "bg-teal-800 text-white"
+                  : "bg-zinc-200 text-zinc-700"
             )}
-            {nextUp && (
-              <span className="text-[10px] font-bold text-teal-800">
-                SIGUIENTE
+          >
+            {done ? <Check className="size-4" /> : <Icon className="size-4" />}
+          </div>
+          <div className="min-w-0 flex-1">
+            <div className="flex flex-wrap items-center gap-1">
+              <span
+                className={cn(
+                  "text-[15px] leading-tight",
+                  (step.priority || step.express) && "font-bold"
+                )}
+              >
+                {step.title}
               </span>
+              {step.express ? (
+                <ExpressTag n={step.expressUse} />
+              ) : sunday && step.kind === "ride" ? (
+                <NoExpressTag />
+              ) : null}
+              {step.kind === "show" && (
+                <span className="text-[10px] font-bold text-fuchsia-800">
+                  SHOW
+                </span>
+              )}
+              {nextUp && (
+                <span className="text-[10px] font-bold text-teal-800">
+                  SIGUIENTE
+                </span>
+              )}
+            </div>
+            {step.zone && (
+              <div className="mt-1">
+                <ZoneTag
+                  zone={step.zone}
+                  action={zoneAction(step.kind, step.title)}
+                  strong={nextUp}
+                />
+              </div>
             )}
           </div>
-          {step.zone && (
-            <div className="mt-1">
-              <ZoneTag
-                zone={step.zone}
-                action={zoneAction(step.kind, step.title)}
-                strong={nextUp}
-              />
-            </div>
-          )}
+          <ChevronDown
+            className="mt-2 size-5 shrink-0 text-zinc-400 transition-transform duration-200 group-open:rotate-180"
+            aria-hidden
+          />
+        </summary>
+        <div className="space-y-2 border-t border-zinc-200/80 px-3 pb-3 pt-2">
+          <div className="text-[11px] font-semibold tracking-wide text-zinc-500 uppercase">
+            {KIND_LABEL[step.kind]}
+          </div>
           {step.wait && (
-            <div className="text-[13px] font-semibold text-zinc-800">
-              {step.wait}
+            <div className="text-[14px] font-semibold text-zinc-800">
+              Cola est. {step.wait}
             </div>
           )}
           {step.walk && (
-            <div className="text-[12px] text-zinc-500">
-              {step.walk}
-              {step.next ? ` → ${step.next}` : ""}
+            <div className="flex items-start gap-2 text-[13px] text-zinc-600">
+              <Footprints className="mt-0.5 size-4 shrink-0" />
+              <span>
+                {step.walk}
+                {step.next ? ` → ${step.next}` : ""}
+              </span>
             </div>
           )}
+          {step.note && (
+            <p className="text-[13px] leading-snug text-zinc-700">{step.note}</p>
+          )}
+          {step.express && (
+            <p className="text-[12px] font-semibold text-amber-800">
+              Usa Express 10
+              {step.expressUse ? ` · uso ${step.expressUse}/9` : ""}.
+            </p>
+          )}
+          {!step.note && !step.wait && !step.walk && (
+            <p className="text-[13px] text-zinc-500">
+              Sigue el orden de la ruta. Sin nota extra en este paso.
+            </p>
+          )}
+          <NavLink
+            href={doneHref}
+            className={cn(
+              "mt-1 flex min-h-11 w-full cursor-pointer touch-manipulation items-center justify-center gap-2 rounded-xl text-[14px] font-bold",
+              done
+                ? "bg-white text-zinc-700 ring-1 ring-zinc-300"
+                : "bg-amber-400 text-teal-950"
+            )}
+          >
+            <Check className="size-4" />
+            {done ? "Desmarcar" : "Hecho"}
+          </NavLink>
         </div>
-      </NavLink>
+      </details>
     </li>
   );
 }
