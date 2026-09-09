@@ -131,6 +131,13 @@ export const SOURCES: Source[] = [
     kind: "histórico",
   },
   {
+    title: "Parque Temático — Hotel El Paso 2026",
+    url: "https://www.parquetematico.net/portaventura/hoteles/elpaso/",
+    usedFor:
+      "Alojamiento de esta visita. Parking en el hotel. Sin acceso directo a Far West: 8–10 min a la entrada principal (fuente de Woody). Acceso de huéspedes ~30 min antes. Check-in: tarjeta = llave + entrada. Habitación hasta las 15:00 (llegada) / 11:00 (salida). Consigna de pago.",
+    kind: "guía",
+  },
+  {
     title: "Blog oficial PortAventura — Rutas por perfil",
     url: "https://www.portaventuraworld.com/blog/las-mejores-rutas-por-portaventura-segun-tu-perfil-de-visitante",
     usedFor:

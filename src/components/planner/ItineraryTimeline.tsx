@@ -25,9 +25,9 @@ const ICONS = {
 } as const;
 
 const SUBTITLES: Record<DayId, string> = {
-  sun: "Tag ámbar = usa Express 10 · Uncharted / Hurakan / Street sin Express",
-  mon: "Sin Express · PortAventura hasta las 15:50 · Ferrari Land 16:30–22:00",
-  tue: "Día más flojo · Uncharted a las 10:30 · cierre 18:00 · sin Ferrari Land",
+  sun: "Hotel El Paso · Express 10 · Uncharted / Hurakan / Street sin Express",
+  mon: "El Paso → Furius a la puerta · Ferrari Land 16:30–22:00",
+  tue: "Check-out El Paso · Uncharted 10:30 · cierre 18:00",
 };
 
 export function ItineraryTimeline({

@@ -671,6 +671,11 @@ export function peakIfNoExpress() {
 
 export const ZONES = [
   {
+    name: "Hotel El Paso",
+    walk: "Alojamiento · parking incluido · sin puerta a Far West",
+    to: "8–10 min a pie → entrada Mediterrània (fuente de Woody, cola de huéspedes)",
+  },
+  {
     name: "Mediterrània",
     walk: "Entrada · Furius Baco",
     to: "4 min → Polynesia · 8–12 min → Far West · 10 min → China",

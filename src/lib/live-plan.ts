@@ -162,7 +162,7 @@ export function advise(
       "before",
       "Todavía no abre",
       `Llega hacia las ${steps[0].time}`,
-      `${meta.label} abre a las ${meta.parkOpen}. ${steps[0].note ?? "Estate en taquillas."}`,
+      `${meta.label} abre a las ${meta.parkOpen}. ${steps[0].note ?? "Sal del Hotel El Paso hacia la entrada."}`,
       firstOpen,
       0
     );
@@ -210,7 +210,7 @@ export function advise(
   } else if (status === "late") {
     reason = `Son las ${nowLabel}. El horario iba por las ${step.time}, pero esto es lo que más rinde ahora.${skipTxt}`;
   } else if (status === "before") {
-    reason = `Son las ${nowLabel}. Parque ${meta.parkHours}. ${step.note ?? "Dirígete a la entrada."}`;
+    reason = `Son las ${nowLabel}. Parque ${meta.parkHours}. ${step.note ?? "Sal del Hotel El Paso hacia la entrada."}`;
   } else {
     reason = `Son las ${nowLabel}. Encaja con el plan de las ${step.time}.${skipTxt}`;
   }

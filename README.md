@@ -1,6 +1,6 @@
 # Plan PortAventura World · 20–22 septiembre 2026
 
-App **PWA para el teléfono**: itinerario paso a paso, colas y Ferrari Land. Instálala en la pantalla de inicio y úsala en el parque (también sin red, con los datos ya cargados).
+App **PWA para el teléfono**: itinerario desde el **Hotel El Paso** (llegada el domingo 20), colas y Ferrari Land. Instálala en la pantalla de inicio y úsala en el parque.
 
 Las cifras de cola son **estimaciones**, no datos oficiales.
 

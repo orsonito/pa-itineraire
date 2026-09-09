@@ -29,6 +29,14 @@ const PALETTE: Record<string, ZonePalette> = {
     header: "bg-amber-400 text-amber-950",
     ring: "ring-amber-500",
   },
+  "Hotel El Paso": {
+    chip: "bg-orange-800 text-orange-50",
+    bar: "bg-orange-800",
+    banner: "bg-orange-800",
+    bannerText: "text-orange-50",
+    header: "bg-orange-800 text-orange-50",
+    ring: "ring-orange-800",
+  },
   México: {
     chip: "bg-orange-500 text-white",
     bar: "bg-orange-500",

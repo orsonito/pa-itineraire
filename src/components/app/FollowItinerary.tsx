@@ -36,9 +36,9 @@ const KIND_LABEL: Record<StepKind, string> = {
 };
 
 const SUBTITLES: Record<string, string> = {
-  sun: "Express 10 · tag ámbar = úsalo · Uncharted / Hurakan / Street sin Express",
-  mon: "Sin Express · a las 15:50 te vas a Ferrari Land",
-  tue: "El más flojo · Uncharted 10:30 · cierra 18:00",
+  sun: "Desde Hotel El Paso · Express 10 · Uncharted / Hurakan / Street sin Express",
+  mon: "El Paso → Furius a la puerta · 15:50 Ferrari Land",
+  tue: "Check-out El Paso · Uncharted 10:30 · cierra 18:00",
 };
 
 export function FollowItinerary() {

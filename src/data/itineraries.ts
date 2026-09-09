@@ -19,18 +19,29 @@ export type ItineraryStep = {
 
 export const SUNDAY_ITINERARY: ItineraryStep[] = [
   {
-    time: "10:00",
+    time: "09:45",
     kind: "note",
-    title: "Estar en taquillas / tornos",
-    note: "Parking y acceso peatonal suelen abrir ~10:00. Parque Temático: llegar 30 min antes. Cruza Mediterrània hacia Far West (~10–12 min) para Uncharted. No pares a desayunar.",
+    title: "Hotel El Paso: maletas y tarjetas",
+    zone: "Hotel El Paso",
+    note: "Llegas hoy. Parking del hotel (incluido), no el del parque. En recepción te dan la tarjeta: es llave y entrada. Si la habitación no está lista (como tarde 15:00, avisan por SMS), consigna de pago. Check-in online si puedes. Luego cola de huéspedes en el acceso peatonal, no la general.",
   },
   {
-    time: "10:18",
+    time: "10:00",
+    kind: "walk",
+    title: "Hotel El Paso → entrada Mediterrània",
+    zone: "Mediterrània",
+    walk: "8–10 min",
+    next: "Tornos (fuente de Woody)",
+    note: "El Paso no tiene puerta a Far West (eso es Gold River / Colorado Creek). Vas a la plaza de la fuente. El acceso de huéspedes suele abrir ~30 min antes; puedes cruzar el parque y hacer cola en Uncharted aunque las atracciones aún no giren.",
+  },
+  {
+    time: "10:12",
     kind: "walk",
     title: "Caminar Mediterrània → Far West",
-    zone: "Anillo del lago",
+    zone: "Far West",
     walk: "10–12 min",
     next: "Uncharted",
+    note: "Anillo del lago. No pares a desayunar: Uncharted no está en Express 10.",
   },
   {
     time: "10:30",
@@ -249,25 +260,26 @@ export const SUNDAY_ITINERARY: ItineraryStep[] = [
     title: "Halloween Parade",
     zone: "Mediterrània",
     wait: "20–25 min (el desfile)",
-    note: "Cierre del día: puente Far West → entrada. Con cierre a las 19:00 suele ser al atardecer, no a las 22:30. Horror en el Lago: típico sábados/festivos; el domingo 20 podría coincidir — mira la app. Si no hay parade, ambiente de lago y salida.",
+    note: "Cierre del día en Mediterrània, a 8–10 min del Hotel El Paso por la misma senda peatonal. Con cierre a las 19:00 el desfile suele ser al atardecer, no a las 22:30. Horror en el Lago: típico sábados/festivos; el domingo 20 podría coincidir — mira la app. Si no hay parade, ambiente de lago y vuelta al hotel.",
   },
 ];
 
 export const MONDAY_ITINERARY: ItineraryStep[] = [
   {
-    time: "10:00",
+    time: "09:45",
     kind: "note",
-    title: "Estar en taquillas / tornos",
-    note: "Sin Express. Afluencia ≈30 %. PortAventura hasta ~15:50; Ferrari Land abre 16:30. Templo del Fuego y Angkor previstos cerrados. No hagas Uncharted hoy a mediodía (≈60 min): si falló el domingo, déjala al martes 10:30.",
+    title: "Salir del Hotel El Paso",
+    zone: "Hotel El Paso",
+    note: "Sin Express. Afluencia ≈30 %. PortAventura hasta ~15:50; Ferrari Land abre 16:30. Templo del Fuego y Angkor previstos cerrados. Desayuno en Buffet Merida solo si no te retrasa: Furius está en la puerta por la que entras. Cola de huéspedes en el acceso peatonal. No hagas Uncharted a mediodía (≈60 min): si falló el domingo, déjala al martes 10:30.",
   },
   {
-    time: "10:25",
+    time: "10:05",
     kind: "walk",
-    title: "Entrar y quedarte en Mediterrània",
+    title: "Hotel El Paso → entrada Mediterrània",
     zone: "Mediterrània",
-    walk: "2 min",
+    walk: "8–10 min",
     next: "Furius Baco",
-    note: "Está a la entrada. A las 17:00 también tendría 20 min, pero a esa hora ya estarás en Ferrari Land.",
+    note: "Misma senda que ayer, plaza de la fuente. Furius está a 2 min de los tornos. A las 17:00 también tendría 20 min, pero a esa hora ya estarás en Ferrari Land.",
   },
   {
     time: "10:30",
@@ -406,7 +418,7 @@ export const MONDAY_ITINERARY: ItineraryStep[] = [
     zone: "Ferrari Land",
     walk: "10–12 min",
     next: "Red Force",
-    note: "PortAventura cierra a las 18:00, pero tú sales ahora para coger Ferrari Land al abrir. Express 10 de PA no vale aquí.",
+    note: "PortAventura cierra a las 18:00, pero tú sales ahora para coger Ferrari Land al abrir. Express 10 de PA no vale aquí. Ferrari Land está junto a la misma entrada: luego vuelves al Hotel El Paso por la senda peatonal (~10 min).",
   },
   {
     time: "16:15",
@@ -521,13 +533,23 @@ export const MONDAY_ITINERARY: ItineraryStep[] = [
 
 export const TUESDAY_ITINERARY: ItineraryStep[] = [
   {
-    time: "10:00",
+    time: "09:30",
     kind: "note",
-    title: "Estar en taquillas / tornos",
-    note: "Día más flojo (≈24 %), sin Express, cierre 18:00. Día entero en PortAventura. Prioridad: Uncharted a primera hora (a las 13:00 son ~55 min). Templo del Fuego y Angkor previstos cerrados.",
+    title: "Check-out Hotel El Paso",
+    zone: "Hotel El Paso",
+    note: "Día más flojo (≈24 %), sin Express, cierre 18:00. Habitación hasta las 11:00. Si no hay extras que pagar, no hace falta pasar por recepción. Consigna de pago para las maletas. Las tarjetas siguen valiendo el día de salida. Prioridad: Uncharted a primera hora (a las 13:00 son ~55 min).",
   },
   {
-    time: "10:18",
+    time: "10:00",
+    kind: "walk",
+    title: "Hotel El Paso → entrada Mediterrània",
+    zone: "Mediterrània",
+    walk: "8–10 min",
+    next: "Far West / Uncharted",
+    note: "Cola de huéspedes. Templo del Fuego y Angkor previstos cerrados.",
+  },
+  {
+    time: "10:12",
     kind: "walk",
     title: "Caminar Mediterrània → Far West",
     zone: "Far West",
@@ -746,7 +768,7 @@ export const TUESDAY_ITINERARY: ItineraryStep[] = [
     kind: "note",
     title: "Cierre / Halloween",
     zone: "Mediterrània",
-    note: "Si Furius se alarga, no empieces otra montaña. Posible pasaje o ambiente Halloween: consulta pases en la app. Las colas cierran a las 18:00.",
+    note: "Si Furius se alarga, no empieces otra montaña. Posible pasaje o ambiente Halloween: consulta pases en la app. Las colas cierran a las 18:00. Recoge maletas en el hotel y tren/coche: la estación Salou-PortAventura está al lado del El Paso.",
   },
 ];
 
