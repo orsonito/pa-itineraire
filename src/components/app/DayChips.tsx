@@ -33,7 +33,7 @@ export function DayChips() {
                 active ? "text-teal-100" : "text-zinc-500"
               )}
             >
-              {d.express ? "Express 10" : "Sin Express"}
+              {d.express ? "Express 10" : "Sans Express"}
             </div>
           </NavLink>
         );

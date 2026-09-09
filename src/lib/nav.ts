@@ -1,9 +1,9 @@
 import type { DayId } from "@/data/wait-model";
 
-export type TabId = "ahora" | "ruta" | "colas" | "dias" | "ferrari" | "mas";
+export type TabId = "ruta" | "colas" | "mas";
 
-const TABS: TabId[] = ["ahora", "ruta", "colas", "dias", "ferrari", "mas"];
-const DAY_IDS: DayId[] = ["sun", "mon", "tue"];
+const TABS: TabId[] = ["ruta", "colas", "mas"];
+export const DAY_IDS: DayId[] = ["sun", "mon", "tue"];
 
 export const EMPTY_DONE: Record<DayId, number[]> = { sun: [], mon: [], tue: [] };
 
@@ -14,6 +14,8 @@ function first(v: string | string[] | undefined): string | undefined {
 
 export function parseTab(v: string | string[] | undefined): TabId {
   const raw = first(v);
+  if (raw === "ahora" || raw === "ici" || raw === "ferrari") return "colas";
+  if (raw === "dias") return "ruta";
   if (raw && TABS.includes(raw as TabId)) return raw as TabId;
   return "ruta";
 }
@@ -76,4 +78,21 @@ export function href(
   const path = `/?${q.toString()}`;
   if (open != null && open >= 0) return `${path}#paso-${open}`;
   return path;
+}
+
+export function parseHref(path: string): {
+  tab: TabId;
+  day: DayId;
+  allDone: Record<DayId, number[]>;
+  open: number | null;
+  hash: string;
+} {
+  const url = new URL(path, "http://local");
+  return {
+    tab: parseTab(url.searchParams.get("tab") ?? undefined),
+    day: parseDay(url.searchParams.get("day") ?? undefined),
+    allDone: parseDone(url.searchParams.get("done") ?? undefined),
+    open: parseOpen(url.searchParams.get("open") ?? undefined),
+    hash: url.hash,
+  };
 }

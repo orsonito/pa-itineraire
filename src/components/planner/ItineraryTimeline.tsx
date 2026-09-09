@@ -1,10 +1,10 @@
 "use client";
 
-import { ExpressTag, NoExpressTag } from "@/components/app/ExpressTag";
+import { ExpressTag, NoExpressTag, SingleRiderTag } from "@/components/app/ExpressTag";
 import { ZoneTag } from "@/components/app/ZoneMark";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ITINERARIES, type ItineraryStep } from "@/data/itineraries";
-import type { DayId } from "@/data/wait-model";
+import { titleHasSingleRider, type DayId } from "@/data/wait-model";
 import { cn } from "@/lib/utils";
 import {
   Footprints,
@@ -25,9 +25,9 @@ const ICONS = {
 } as const;
 
 const SUBTITLES: Record<DayId, string> = {
-  sun: "Hotel El Paso · Express 10 · Uncharted / Hurakan / Street sin Express",
-  mon: "El Paso → PA hasta 18:00 · Ferrari Land 18:10–22:00",
-  tue: "Check-out El Paso · Uncharted 10:30 · cierre 18:00",
+  sun: "Hotel El Paso · Express 10 · Uncharted / Hurakan / Street sans Express",
+  mon: "El Paso → China d’abord (pas Furius à l’entrée) · Ferrari Land le soir",
+  tue: "Check-out El Paso · China 10:30 · Furius en fin de journée",
 };
 
 export function ItineraryTimeline({
@@ -42,7 +42,7 @@ export function ItineraryTimeline({
     <Card className="border-zinc-200 shadow-sm">
       <CardHeader className="pb-3">
         <CardTitle className="text-base">
-          {title ?? "Itinerario hora a hora"}
+          {title ?? "Itinéraire heure par heure"}
         </CardTitle>
         <p className="text-[12px] font-normal text-zinc-500">{SUBTITLES[day]}</p>
       </CardHeader>
@@ -97,20 +97,26 @@ function Step({
           </span>
           {step.express ? (
             <ExpressTag n={step.expressUse} />
-          ) : sunday && step.kind === "ride" ? (
+          ) : sunday && step.kind === "ride" && !step.optional ? (
             <NoExpressTag />
           ) : null}
+          {titleHasSingleRider(step.title) && <SingleRiderTag />}
+          {step.optional && (
+            <span className="rounded bg-violet-100 px-1.5 py-0.5 text-[10px] font-bold tracking-wide text-violet-800">
+              OPTIONNEL
+            </span>
+          )}
           <ZoneTag zone={step.zone} />
         </div>
         <div className="mt-0.5 space-y-0.5 text-[12px] text-zinc-600">
           {step.wait && (
             <div>
-              Cola: <span className="font-semibold text-zinc-800">{step.wait}</span>
+              File : <span className="font-semibold text-zinc-800">{step.wait}</span>
             </div>
           )}
           {step.walk && (
             <div>
-              Desplazamiento: {step.walk}
+              Déplacement : {step.walk}
               {step.next ? ` → ${step.next}` : ""}
             </div>
           )}

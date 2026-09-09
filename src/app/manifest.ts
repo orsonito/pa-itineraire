@@ -5,14 +5,14 @@ export default function manifest(): MetadataRoute.Manifest {
     name: "Plan PortAventura",
     short_name: "PA Plan",
     description:
-      "Itinerario y colas de PortAventura 20–22 septiembre 2026, para seguirlo en el móvil.",
+      "Itinéraire et files d’attente de PortAventura 20–22 septembre 2026, à suivre sur le téléphone.",
     start_url: "/",
     scope: "/",
     display: "standalone",
     orientation: "portrait",
     background_color: "#134e4a",
     theme_color: "#134e4a",
-    lang: "es",
+    lang: "fr",
     icons: [
       {
         src: "/icons/icon-192.png",

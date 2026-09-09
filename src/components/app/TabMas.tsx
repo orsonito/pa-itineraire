@@ -8,6 +8,7 @@ import { cn } from "@/lib/utils";
 import { zonePalette, zonesMatch } from "@/lib/zones";
 import { Download } from "lucide-react";
 import { useEffect, useState, useSyncExternalStore } from "react";
+import { QrWallet } from "./QrWallet";
 import { ZoneTag } from "./ZoneMark";
 import { useVisit } from "./VisitProvider";
 
@@ -47,10 +48,12 @@ export function TabMas() {
 
   return (
     <div className="space-y-4">
+      <QrWallet />
+
       <div className="rounded-2xl border border-amber-300 bg-amber-50 p-3 text-[13px] text-amber-950">
-        <strong>No son datos oficiales.</strong> Las colas son estimaciones
-        (±10–15 min). Sigue el <em>orden</em> de la ruta, no el reloj al
-        minuto. Confirma en la app de PortAventura.
+        <strong>Ce ne sont pas des données officielles.</strong> Les files sont des
+        estimations (±10–15 min). Suis l’<em>ordre</em> du parcours, pas
+        l’horloge à la minute. Confirme dans l’app PortAventura.
       </div>
 
       {!installed && (
@@ -61,15 +64,15 @@ export function TabMas() {
         >
           <Download className="size-4" />
           {install
-            ? "Instalar en el teléfono"
-            : "En iPhone: Compartir → Añadir a pantalla de inicio"}
+            ? "Installer sur le téléphone"
+            : "Sur iPhone : Partager → Ajouter à l’écran d’accueil"}
         </button>
       )}
 
       <section className="rounded-2xl bg-white p-4 ring-1 ring-zinc-200">
-        <h2 className="font-bold">Ahorro Express 10 · domingo</h2>
+        <h2 className="font-bold">Gain Express 10 · dimanche</h2>
         <p className="mt-1 text-[12px] text-zinc-500">
-          Express ≠ 0 min (3–8 min). Angkor prevista cerrada → 9 de 10.
+          Express ≠ 0 min (3–8 min). Angkor prévue fermée → 9 sur 10.
         </p>
         <div className="mt-3 grid grid-cols-3 gap-2 text-center">
           <div>
@@ -81,19 +84,19 @@ export function TabMas() {
             <div className="font-bold">{savings.totalExpress} min</div>
           </div>
           <div>
-            <div className="text-[11px] text-zinc-500">Ahorras</div>
+            <div className="text-[11px] text-zinc-500">Tu gagnes</div>
             <div className="font-bold text-emerald-700">
               {savings.totalSaved} min
             </div>
           </div>
         </div>
         <p className="mt-2 text-[12px] text-zinc-500">
-          En hora punta sin plan: {peak.totalSaved} min de ahorro teórico.
+          En heure de pointe sans plan : {peak.totalSaved} min de gain théorique.
         </p>
       </section>
 
       <section>
-        <h2 className="mb-2 font-bold">Zonas</h2>
+        <h2 className="mb-2 font-bold">Zones</h2>
         <div className="space-y-2">
           {ZONES.map((z) => {
             const here = zonesMatch(hereZone, z.name);
@@ -109,7 +112,7 @@ export function TabMas() {
                   <ZoneTag zone={z.name} strong={here} />
                   {here && (
                     <span className="text-[10px] font-bold text-teal-800">
-                      AHORA
+                      MAINTENANT
                     </span>
                   )}
                 </div>
@@ -122,7 +125,7 @@ export function TabMas() {
       </section>
 
       <section>
-        <h2 className="mb-2 font-bold">Fuentes</h2>
+        <h2 className="mb-2 font-bold">Sources</h2>
         <div className="space-y-2">
           {SOURCES.map((s) => (
             <article

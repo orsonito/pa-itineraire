@@ -4,9 +4,9 @@ export default function NotFound() {
       <p className="text-[11px] font-semibold tracking-[0.16em] text-teal-800 uppercase">
         PortAventura
       </p>
-      <h1 className="text-2xl font-bold">Página no encontrada</h1>
+      <h1 className="text-2xl font-bold">Page introuvable</h1>
       <a href="/" className="mt-2 text-[15px] font-semibold text-teal-800 underline">
-        Volver al plan
+        Retour au plan
       </a>
     </div>
   );

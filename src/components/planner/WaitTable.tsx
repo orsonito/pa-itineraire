@@ -1,6 +1,7 @@
 "use client";
 
 import { Badge } from "@/components/ui/badge";
+import { SingleRiderTag } from "@/components/app/ExpressTag";
 import {
   bestHours,
   DAYS,
@@ -71,6 +72,15 @@ function RideName({ ride }: { ride: Ride }) {
             EX10
           </Badge>
         )}
+        {ride.singleRider && <SingleRiderTag />}
+        {ride.optional && (
+          <Badge
+            variant="secondary"
+            className="h-4 rounded-sm bg-violet-100 px-1 text-[9px] font-semibold tracking-wide text-violet-800"
+          >
+            OPT.
+          </Badge>
+        )}
       </div>
       <div className="text-[10px] text-zinc-500">{ride.zone}</div>
     </div>
@@ -88,7 +98,7 @@ export function WaitTable({ day }: { day: DayId }) {
         <thead>
           <tr className="bg-zinc-900 text-white">
             <th className="sticky left-0 z-10 bg-zinc-900 px-3 py-2.5 text-left text-[11px] font-semibold uppercase tracking-wide">
-              Atracción
+              Attraction
             </th>
             {hours.map((h) => (
               <th
@@ -99,7 +109,7 @@ export function WaitTable({ day }: { day: DayId }) {
               </th>
             ))}
             <th className="px-3 py-2.5 text-left text-[11px] font-semibold">
-              Mejor hora
+              Meilleure heure
             </th>
           </tr>
         </thead>
@@ -119,8 +129,8 @@ export function WaitTable({ day }: { day: DayId }) {
                     className="border-b border-zinc-200 px-3 py-2 text-center text-[12px] text-zinc-500"
                   >
                     {ride.statusByDay[day] === "likely-closed"
-                      ? "Prevista CERRADA (hasta 2027) · confirmar app"
-                      : "No opera este día (previsto)"}
+                      ? "Prévue FERMÉE (jusqu’en 2027) · confirmer l’app"
+                      : "N’opère pas ce jour (prévu)"}
                     {ride.statusNote ? ` · ${ride.statusNote}` : null}
                   </td>
                 ) : (
@@ -136,7 +146,7 @@ export function WaitTable({ day }: { day: DayId }) {
                   {closedRow ? "—" : formatBest(ride, day)}
                   {best && best.hours.length > 1 ? (
                     <span className="block text-[10px] font-normal text-zinc-500">
-                      empate
+                      égalité
                     </span>
                   ) : null}
                 </td>

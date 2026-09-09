@@ -52,8 +52,15 @@ function nearestHour(nowMin: number, hours: Hour[]): Hour {
   return best;
 }
 
-function rideForStep(step: ItineraryStep) {
-  return RIDES.find((r) => step.title.includes(r.name));
+export function ridesForStep(step: ItineraryStep) {
+  if (step.propose?.length) {
+    return RIDES.filter((r) => step.propose!.includes(r.id));
+  }
+  return RIDES.filter((r) => step.title.includes(r.name));
+}
+
+export function rideForStep(step: ItineraryStep) {
+  return ridesForStep(step)[0];
 }
 
 function waitLine(
@@ -69,9 +76,9 @@ function waitLine(
   const express =
     day === "sun" ? estimateExpressWait(ride, day, hour) : null;
   if (express != null) {
-    return `~${normal} min ahora (${hour}) · ${express} min Express`;
+    return `~${normal} min maintenant (${hour}) · ${express} min Express`;
   }
-  return `~${normal} min ahora (${hour})`;
+  return `~${normal} min maintenant (${hour})`;
 }
 
 function scoreStep(
@@ -87,11 +94,15 @@ function scoreStep(
   if (step.kind === "show" && lateBy > 18) {
     return Number.NEGATIVE_INFINITY;
   }
+  if (step.optional && lateBy > 8) {
+    return Number.NEGATIVE_INFINITY;
+  }
   if (planned > nowMin + 50) return Number.NEGATIVE_INFINITY;
   if (step.kind === "ride" && lateBy > 70 && nowMin < closeMin - 20) {
     return KIND_SCORE.ride - lateBy / 4;
   }
-  return KIND_SCORE[step.kind] + 28 - Math.abs(lateBy) / 2;
+  const optionalPenalty = step.optional ? 16 : 0;
+  return KIND_SCORE[step.kind] + 28 - optionalPenalty - Math.abs(lateBy) / 2;
 }
 
 export function advise(
@@ -138,9 +149,9 @@ export function advise(
   if (firstOpen === -1) {
     return wrap(
       "done",
-      "Día completado",
-      "Has marcado todos los pasos",
-      `Nada pendiente en ${meta.label}. Puedes reiniciar el día o mirar colas.`,
+      "Journée terminée",
+      "Tu as coché toutes les étapes",
+      `Rien de restant pour ${meta.label}. Tu peux relancer la journée ou regarder les files.`,
       steps.length - 1,
       0
     );
@@ -149,9 +160,9 @@ export function advise(
   if (nowMin >= dayEnd) {
     return wrap(
       "closed",
-      "Ya ha cerrado",
+      "C’est déjà fermé",
       `Fin de ${meta.label}`,
-      `Cierre previsto ${meta.parkHours}. Si sigues dentro, últimas repeticiones o salida.`,
+      `Fermeture prévue ${meta.parkHours}. Si tu es encore dedans, dernières répétitions ou sortie.`,
       steps.length - 1,
       0
     );
@@ -160,9 +171,9 @@ export function advise(
   if (nowMin < openMin - 45) {
     return wrap(
       "before",
-      "Todavía no abre",
-      `Llega hacia las ${steps[0].time}`,
-      `${meta.label} abre a las ${meta.parkOpen}. ${steps[0].note ?? "Sal del Hotel El Paso hacia la entrada."}`,
+      "Pas encore ouvert",
+      `Arrive vers ${steps[0].time}`,
+      `${meta.label} ouvre à ${meta.parkOpen}. ${steps[0].note ?? "Sors de l’Hotel El Paso vers l’entrée."}`,
       firstOpen,
       0
     );
@@ -192,27 +203,27 @@ export function advise(
 
   const label =
     status === "late"
-      ? "Vas tarde · recupera aquí"
+      ? "Tu es en retard · rattrape ici"
       : status === "ahead"
-        ? "Vas adelantado"
+        ? "Tu es en avance"
         : status === "before"
-          ? "Todavía no abre"
-          : "Ahora mismo";
+          ? "Pas encore ouvert"
+          : "Maintenant";
 
   const skipTxt =
     skipped > 0
-      ? ` No vuelvas a los ${skipped} paso${skipped === 1 ? "" : "s"} de antes: a esta hora ya no compensan.`
+      ? ` Ne reviens pas aux ${skipped} étape${skipped === 1 ? "" : "s"} d’avant : à cette heure, ça ne vaut plus le coup.`
       : "";
 
   let reason: string;
   if (status === "ahead") {
-    reason = `Son las ${nowLabel}. El plan marca esto a las ${step.time}. Puedes ir ya o usar el margen.`;
+    reason = `Il est ${nowLabel}. Le plan indique ça à ${step.time}. Tu peux y aller déjà ou garder la marge.`;
   } else if (status === "late") {
-    reason = `Son las ${nowLabel}. El horario iba por las ${step.time}, pero esto es lo que más rinde ahora.${skipTxt}`;
+    reason = `Il est ${nowLabel}. L’horaire était à ${step.time}, mais c’est ça qui rapporte le plus maintenant.${skipTxt}`;
   } else if (status === "before") {
-    reason = `Son las ${nowLabel}. Parque ${meta.parkHours}. ${step.note ?? "Sal del Hotel El Paso hacia la entrada."}`;
+    reason = `Il est ${nowLabel}. Parc ${meta.parkHours}. ${step.note ?? "Sors de l’Hotel El Paso vers l’entrée."}`;
   } else {
-    reason = `Son las ${nowLabel}. Encaja con el plan de las ${step.time}.${skipTxt}`;
+    reason = `Il est ${nowLabel}. Ça colle avec le plan de ${step.time}.${skipTxt}`;
   }
   if (step.note && status !== "before") {
     reason = `${reason} ${step.note}`;
@@ -221,7 +232,3 @@ export function advise(
   return wrap(status, label, step.title, reason, bestIdx, skipped);
 }
 
-export function catchUpDone(done: number[], untilIndex: number): number[] {
-  const extra = [...Array(untilIndex).keys()];
-  return [...new Set([...done, ...extra])].sort((a, b) => a - b);
-}

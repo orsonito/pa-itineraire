@@ -71,9 +71,9 @@ export const DAYS: Record<
 > = {
   sun: {
     id: "sun",
-    label: "Domingo 20",
+    label: "Dimanche 20",
     date: "20/09/2026",
-    weekday: "Domingo",
+    weekday: "Dimanche",
     crowdQueueTimesEs: 42,
     crowdQueueTimesEn: 45,
     crowdUser: 38,
@@ -86,9 +86,9 @@ export const DAYS: Record<
   },
   mon: {
     id: "mon",
-    label: "Lunes 21",
+    label: "Lundi 21",
     date: "21/09/2026",
-    weekday: "Lunes",
+    weekday: "Lundi",
     crowdQueueTimesEs: 30,
     crowdQueueTimesEn: 34,
     crowdUser: 28,
@@ -101,9 +101,9 @@ export const DAYS: Record<
   },
   tue: {
     id: "tue",
-    label: "Martes 22",
+    label: "Mardi 22",
     date: "22/09/2026",
-    weekday: "Martes",
+    weekday: "Mardi",
     crowdQueueTimesEs: 24,
     crowdQueueTimesEn: 26,
     crowdUser: 22,
@@ -130,7 +130,11 @@ export type RideId =
   | "rapids"
   | "angkor"
   | "street"
-  | "tomahawk";
+  | "tomahawk"
+  | "kontiki"
+  | "volpaiute"
+  | "yucatan"
+  | "serpiente";
 
 export type Ride = {
   id: RideId;
@@ -139,6 +143,10 @@ export type Ride = {
   zone: string;
   express10: boolean;
   priority: boolean;
+  /** File Single Rider (siège vide, tu montes seul). */
+  singleRider?: boolean;
+  /** Extra medium/strong ride, not on the main path. */
+  optional?: boolean;
   /** Pico estimado domingo ~13:00 en un día ~42% (minutos cola normal). */
   sundayPeak: number;
   curve: Partial<Record<Hour, number>>;
@@ -261,6 +269,7 @@ export const RIDES: Ride[] = [
     zone: "Mediterrània",
     express10: true,
     priority: true,
+    singleRider: true,
     sundayPeak: 50,
     curve: FURIUS,
     crowdElasticity: 0.9,
@@ -277,6 +286,7 @@ export const RIDES: Ride[] = [
     zone: "China",
     express10: true,
     priority: true,
+    singleRider: true,
     sundayPeak: 45,
     curve: STANDARD,
     crowdElasticity: 0.88,
@@ -293,6 +303,7 @@ export const RIDES: Ride[] = [
     zone: "China",
     express10: true,
     priority: true,
+    singleRider: true,
     sundayPeak: 38,
     curve: LATE_11,
     crowdElasticity: 0.9,
@@ -309,6 +320,7 @@ export const RIDES: Ride[] = [
     zone: "México",
     express10: false,
     priority: true,
+    singleRider: true,
     sundayPeak: 45,
     curve: STANDARD,
     crowdElasticity: 0.88,
@@ -349,7 +361,7 @@ export const RIDES: Ride[] = [
     qtAvg2026: 37,
     thrillSept21: 30,
     statusNote:
-      "Puede cerrar antes que el parque. En Halloween a veces se apaga antes.",
+      "Peut fermer avant le parc. À Halloween, parfois arrêtée plus tôt.",
     statusByDay: OPEN_ALL,
   },
   {
@@ -367,7 +379,7 @@ export const RIDES: Ride[] = [
     qtAvg2026: 30,
     thrillSept21: 21,
     statusNote:
-      "Puede cerrar antes que el parque. Confirmar en la app el mismo día.",
+      "Peut fermer avant le parc. Confirmer dans l’app le jour même.",
     statusByDay: OPEN_ALL,
   },
   {
@@ -381,11 +393,11 @@ export const RIDES: Ride[] = [
     curve: TEMPLO,
     crowdElasticity: 0.85,
     expressWait: 5,
-    opens: "según pases (típico ~11:00)",
+    opens: "selon séances (typique ~11:00)",
     qtAvg2026: 28,
     thrillSept21: 29,
     statusNote:
-      "Desde el 7/09/2026 Parque Temático indica que solo opera sábados y domingos. El Express salta al siguiente pase (~0–10 min).",
+      "Depuis le 7/09/2026 Parque Temático indique un fonctionnement samedis et dimanches seulement. L’Express saute à la séance suivante (~0–10 min).",
     statusByDay: {
       sun: "weekend-only",
       mon: "closed",
@@ -439,7 +451,7 @@ export const RIDES: Ride[] = [
     qtAvg2026: 15,
     thrillSept21: 15,
     statusNote:
-      "Parque Temático (sept. 2026): cerrada el resto de 2026; no vuelve hasta 2027. El Express 10 puede sustituirla por otra.",
+      "Parque Temático (sept. 2026) : fermée le reste de 2026 ; ne revient qu’en 2027. L’Express 10 peut la remplacer par une autre.",
     statusByDay: {
       sun: "likely-closed",
       mon: "likely-closed",
@@ -478,6 +490,78 @@ export const RIDES: Ride[] = [
     thrillSept21: 28,
     statusByDay: OPEN_ALL,
   },
+  {
+    id: "kontiki",
+    name: "Kontiki",
+    short: "Kontiki",
+    zone: "Polynesia",
+    express10: false,
+    priority: false,
+    optional: true,
+    sundayPeak: 12,
+    curve: STANDARD,
+    crowdElasticity: 0.95,
+    expressWait: null,
+    opens: "10:30",
+    qtAvg2026: null,
+    statusNote:
+      "Bateau à bascule, sensation moyenne. 1,40 m seul / 1,30 m avec adulte. Pas Express.",
+    statusByDay: OPEN_ALL,
+  },
+  {
+    id: "volpaiute",
+    name: "Volpaiute",
+    short: "Volpaiute",
+    zone: "Far West",
+    express10: false,
+    priority: false,
+    optional: true,
+    sundayPeak: 14,
+    curve: STANDARD,
+    crowdElasticity: 0.95,
+    expressWait: null,
+    opens: "10:30",
+    qtAvg2026: null,
+    statusNote:
+      "Top Spin : plateforme qui se couche. Sensation moyenne/forte. 1,40 m seul. Souvent fermée — vois l’app.",
+    statusByDay: OPEN_ALL,
+  },
+  {
+    id: "yucatan",
+    name: "Yucatán",
+    short: "Yucatán",
+    zone: "México",
+    express10: false,
+    priority: false,
+    optional: true,
+    sundayPeak: 12,
+    curve: STANDARD,
+    crowdElasticity: 0.95,
+    expressWait: null,
+    opens: "10:30",
+    qtAvg2026: null,
+    statusNote:
+      "Manège qui accélère en tournant. Sensation moyenne. 1,40 m seul / 1,30 m avec adulte.",
+    statusByDay: OPEN_ALL,
+  },
+  {
+    id: "serpiente",
+    name: "Serpiente Emplumada",
+    short: "Serpiente",
+    zone: "México",
+    express10: false,
+    priority: false,
+    optional: true,
+    sundayPeak: 12,
+    curve: STANDARD,
+    crowdElasticity: 0.95,
+    expressWait: null,
+    opens: "10:30",
+    qtAvg2026: null,
+    statusNote:
+      "Manège tournant, sensation moyenne. 1,40 m seul (pas d’accès enfant). Peut être fermée.",
+    statusByDay: OPEN_ALL,
+  },
 ];
 
 /** Factor de afluencia respecto al domingo (42 %). */
@@ -491,7 +575,7 @@ function roundWait(n: number): number {
   return Math.max(5, Math.round(n / 5) * 5);
 }
 
-function isOpen(ride: Ride, day: DayId): boolean {
+export function isOpen(ride: Ride, day: DayId): boolean {
   const s = ride.statusByDay[day];
   return s === "open" || s === "weekend-only";
 }
@@ -585,9 +669,14 @@ export function bestHours(
 
 export function formatBest(ride: Ride, day: DayId): string {
   const b = bestHours(ride, day);
-  if (!b) return "No opera";
+  if (!b) return "N’opère pas";
   if (b.hours.length === 1) return `${b.hours[0]} (${b.wait} min)`;
   return `${b.hours.join(" / ")} (${b.wait} min)`;
+}
+
+export function titleHasSingleRider(title: string): boolean {
+  if (/Thrill Towers/i.test(title)) return true;
+  return RIDES.some((r) => r.singleRider && title.includes(r.name));
 }
 
 export const TONE_CLASS: Record<WaitTone | "closed", string> = {
@@ -600,12 +689,12 @@ export const TONE_CLASS: Record<WaitTone | "closed", string> = {
 };
 
 export const TONE_LABEL: Record<WaitTone | "closed", string> = {
-  green: "Mejor ventana",
-  greenLight: "Muy buena",
-  yellow: "Moderada",
-  orange: "Alta",
-  red: "Peor momento",
-  closed: "Cerrada / no opera",
+  green: "Meilleure fenêtre",
+  greenLight: "Très bonne",
+  yellow: "Modérée",
+  orange: "Haute",
+  red: "Pire moment",
+  closed: "Fermée / n’opère pas",
 };
 
 /** Totales Express 10 del domingo según itinerario óptimo (no hora punta). */
@@ -672,17 +761,17 @@ export function peakIfNoExpress() {
 export const ZONES = [
   {
     name: "Hotel El Paso",
-    walk: "Alojamiento · parking incluido · sin puerta a Far West",
-    to: "8–10 min a pie → entrada Mediterrània (fuente de Woody, cola de huéspedes)",
+    walk: "Hébergement · parking inclus · pas de porte vers Far West",
+    to: "8–10 min à pied → entrée Mediterrània (fontaine de Woody, file des hôtes)",
   },
   {
     name: "Mediterrània",
-    walk: "Entrada · Furius Baco",
+    walk: "Entrée · Furius Baco",
     to: "4 min → Polynesia · 8–12 min → Far West · 10 min → China",
   },
   {
     name: "Polynesia",
-    walk: "Tutuki Splash",
+    walk: "Tutuki Splash · Kontiki",
     to: "4 min → Sésamo · 4 min → Mediterrània",
   },
   {
@@ -697,12 +786,12 @@ export const ZONES = [
   },
   {
     name: "México",
-    walk: "Hurakan Condor · El Diablo · Templo del Fuego",
+    walk: "Hurakan Condor · El Diablo · Templo del Fuego · Yucatán · Serpiente",
     to: "6 min → Far West · 5 min → China",
   },
   {
     name: "Far West",
-    walk: "Uncharted · Stampida · Silver River · Grand Canyon · Tomahawk",
-    to: "8–12 min → Mediterrània (entrada) · 6 min → México",
+    walk: "Uncharted · Stampida · Silver River · Grand Canyon · Tomahawk · Volpaiute",
+    to: "8–12 min → Mediterrània (entrée) · 6 min → México",
   },
 ];

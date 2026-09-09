@@ -1,4 +1,4 @@
-import { Zap } from "lucide-react";
+import { User, Zap } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export function ExpressTag({
@@ -29,7 +29,22 @@ export function NoExpressTag({ className }: { className?: string }) {
         className
       )}
     >
-      Sin Express
+      Sans Express
+    </span>
+  );
+}
+
+export function SingleRiderTag({ className }: { className?: string }) {
+  return (
+    <span
+      title="File Single Rider : tu montes seul, tu remplis un siège vide"
+      className={cn(
+        "inline-flex h-5 shrink-0 items-center gap-0.5 rounded-md bg-sky-100 px-1.5 text-[10px] font-bold tracking-wide text-sky-950 uppercase",
+        className
+      )}
+    >
+      <User className="size-3" aria-hidden />
+      Single
     </span>
   );
 }

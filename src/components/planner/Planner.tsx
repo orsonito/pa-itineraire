@@ -17,19 +17,20 @@ import {
   type WaitTone,
 } from "@/data/wait-model";
 import { cn } from "@/lib/utils";
+import { SingleRiderTag } from "@/components/app/ExpressTag";
 import { GlobalMatrix } from "./GlobalMatrix";
 import { ItineraryTimeline } from "./ItineraryTimeline";
 import { WaitTable } from "./WaitTable";
 
 const NAV: { id: string; label: string }[] = [
-  { id: "resumen", label: "Resumen" },
-  { id: "domingo", label: "Dom 20" },
+  { id: "resumen", label: "Résumé" },
+  { id: "domingo", label: "Dim 20" },
   { id: "lunes", label: "Lun 21" },
   { id: "martes", label: "Mar 22" },
-  { id: "comparativa", label: "Comparar" },
-  { id: "itinerarios", label: "Ruta" },
+  { id: "comparativa", label: "Comparer" },
+  { id: "itinerarios", label: "Parcours" },
   { id: "ferrari", label: "Ferrari" },
-  { id: "fuentes", label: "Fuentes" },
+  { id: "fuentes", label: "Sources" },
 ];
 
 export function Planner() {
@@ -43,14 +44,14 @@ export function Planner() {
           <div className="flex items-start justify-between gap-3">
             <div>
               <p className="text-[11px] font-semibold tracking-[0.14em] text-teal-800 uppercase">
-                PortAventura World · plan de visita
+                PortAventura World · plan de visite
               </p>
               <h1 className="font-heading text-xl font-bold tracking-tight sm:text-2xl">
-                20, 21 y 22 de septiembre de 2026
+                20, 21 et 22 septembre 2026
               </h1>
             </div>
             <Badge className="shrink-0 bg-teal-800 text-white">
-              Express 10 · solo domingo
+              Express 10 · dimanche seulement
             </Badge>
           </div>
           <nav className="-mx-1 flex gap-1 overflow-x-auto pb-1">
@@ -78,47 +79,47 @@ export function Planner() {
           <Card className="border-zinc-200 shadow-sm">
             <CardHeader className="pb-2">
               <CardTitle className="text-base">
-                Qué cambió respecto a tus % (38 / 28 / 22)
+                Ce qui a changé par rapport à tes % (38 / 28 / 22)
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-2 text-[13px] leading-relaxed text-zinc-700">
               <p>
-                El calendario de Parque Temático es visual (colores), no publica
-                un porcentaje en el HTML. Queue-Times sí publica una previsión
-                numérica para esas fechas exactas:
+                Le calendrier de Parque Temático est visuel (couleurs) et ne
+                publie pas de pourcentage dans le HTML. Queue-Times publie bien
+                une prévision numérique pour ces dates exactes :
               </p>
               <ul className="list-disc space-y-1 pl-5">
                 <li>
-                  <strong>20/09:</strong> tú 38 % → Queue-Times{" "}
-                  <strong>42 %</strong> (EN 45 %). Es +4 puntos. Sigue siendo un
-                  domingo moderado, no un día negro.
+                  <strong>20/09 :</strong> toi 38 % → Queue-Times{" "}
+                  <strong>42 %</strong> (EN 45 %). C’est +4 points. Ça reste un
+                  dimanche modéré, pas un jour noir.
                 </li>
                 <li>
-                  <strong>21/09:</strong> tú 28 % → <strong>30 %</strong> (EN 34 %).
+                  <strong>21/09 :</strong> toi 28 % → <strong>30 %</strong> (EN 34 %).
                 </li>
                 <li>
-                  <strong>22/09:</strong> tú 22 % → <strong>24 %</strong> (EN 26 %).
+                  <strong>22/09 :</strong> toi 22 % → <strong>24 %</strong> (EN 26 %).
                 </li>
               </ul>
               <p>
-                El ranking no cambia: domingo más lleno, martes el más flojo.
-                Las tablas usan <strong>42 / 30 / 24 %</strong> (versión ES de
-                Queue-Times). No he multiplicado las colas por esos porcentajes:
-                el pico de cada atracción se calibra con medias 2026 + Thrill
-                Data de finales de septiembre, y luego se aplica una curva
-                horaria y un factor de afluencia con suelo (las colas no caen a
-                cero).
+                Le classement ne change pas : dimanche le plus chargé, mardi le
+                plus calme. Les tableaux utilisent <strong>42 / 30 / 24 %</strong>{" "}
+                (version ES de Queue-Times). Je n’ai pas multiplié les files par
+                ces pourcentages : le pic de chaque attraction est calibré avec
+                les moyennes 2026 + Thrill Data de fin septembre, puis on applique
+                une courbe horaire et un facteur d’affluence avec un plancher
+                (les files ne tombent pas à zéro).
               </p>
               <p>
-                <strong>Halloween</strong> empieza el 19/09/2026 (oficial). Los
-                tres días son Halloween: más ambiente, posibles pasajes, y el
-                agua puede recortar horario.
+                <strong>Halloween</strong> commence le 19/09/2026 (officiel). Les
+                trois jours sont Halloween : plus d’ambiance, passages possibles,
+                et l’eau peut raccourcir ses horaires.
               </p>
               <p>
-                <strong>Angkor:</strong> Parque Temático (sept. 2026) la da por
-                cerrada hasta 2027. <strong>Templo del Fuego:</strong> desde el
-                7/09, previsto solo sábados y domingos → útil el domingo, no el
-                lunes/martes. Confirmar ambos en la app.
+                <strong>Angkor :</strong> Parque Temático (sept. 2026) la donne
+                fermée jusqu’en 2027. <strong>Templo del Fuego :</strong> depuis le
+                7/09, prévu seulement samedis et dimanches → utile le dimanche, pas
+                le lundi/mardi. Confirmer les deux dans l’app.
               </p>
             </CardContent>
           </Card>
@@ -126,7 +127,7 @@ export function Planner() {
           <Card className="border-zinc-200 shadow-sm">
             <CardHeader className="pb-2">
               <CardTitle className="text-base">
-                Mapa mental del parque (desplazamientos estimados)
+                Carte mentale du parc (déplacements estimés)
               </CardTitle>
             </CardHeader>
             <CardContent className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
@@ -147,54 +148,55 @@ export function Planner() {
         <section id="domingo" className="scroll-mt-28 space-y-3">
           <DayHeading id="sun" />
           <p className="text-[13px] text-zinc-600">
-            Celdas: <strong>cola normal / Express</strong> (minutos). Color
-            comparado <em>dentro de cada fila</em>, no contra un umbral global.
-            Express 10 no cubre Uncharted, Hurakan ni Street Mission.
+            Cases : <strong>file normale / Express</strong> (minutes). Couleur
+            comparée <em>dans chaque ligne</em>, pas contre un seuil global.
+            Express 10 ne couvre pas Uncharted, Hurakan ni Street Mission.
           </p>
           <WaitTable day="sun" />
           <ExpressPanel savings={savings} peak={peak} />
-          <ItineraryTimeline day="sun" title="Itinerario óptimo · domingo 20" />
+          <ItineraryTimeline day="sun" title="Itinéraire optimal · dimanche 20" />
         </section>
 
         <section id="lunes" className="scroll-mt-28 space-y-3">
           <DayHeading id="mon" />
           <p className="text-[13px] text-zinc-600">
-            Sin Express. Celdas en minutos de cola normal. PortAventura
-            entero hasta las 18:00; Ferrari Land al cierre (Red Force a las
-            21:10, no al abrir).
+            Sans Express. Cases en minutes de file normale. PortAventura
+            entier jusqu’à 18:00 ; Ferrari Land à la fermeture (Red Force à
+            21:10, pas à l’ouverture).
           </p>
           <WaitTable day="mon" />
-          <ItineraryTimeline day="mon" title="Itinerario óptimo · lunes 21" />
+          <ItineraryTimeline day="mon" title="Itinéraire optimal · lundi 21" />
         </section>
 
         <section id="martes" className="scroll-mt-28 space-y-3">
           <DayHeading id="tue" />
           <p className="text-[13px] text-zinc-600">
-            Día más flojo y sin Express. Día entero en PortAventura. Mejor
-            Uncharted de los tres a primera hora (junto con las 17:00).
+            Jour le plus calme et sans Express. Journée entière à PortAventura.
+            Début en China (Shambhala), pas Furius à l’entrée. Uncharted en
+            fin d’après-midi (~17:00, même file qu’à 10:30).
           </p>
           <WaitTable day="tue" />
-          <ItineraryTimeline day="tue" title="Itinerario óptimo · martes 22" />
+          <ItineraryTimeline day="tue" title="Itinéraire optimal · mardi 22" />
         </section>
 
         <section id="comparativa" className="scroll-mt-28 space-y-3">
-          <h2 className="text-xl font-bold">Matriz global</h2>
+          <h2 className="text-xl font-bold">Matrice globale</h2>
           <GlobalMatrix />
         </section>
 
         <section id="itinerarios" className="scroll-mt-28 space-y-6">
           <div>
-            <h2 className="text-xl font-bold">Itinerarios óptimos · los tres días</h2>
+            <h2 className="text-xl font-bold">Itinéraires optimaux · les trois jours</h2>
             <p className="text-[13px] text-zinc-600">
-              Mismo formato los tres días: hora → atracción → zona → cola →
-              desplazamiento → siguiente. Domingo con Express 10. Lunes sin
-              Express. Lunes: PortAventura hasta el cierre y Ferrari Land por
-              la noche. Martes, el más flojo, día entero en PortAventura.
+              Même format les trois jours : heure → attraction → zone → file →
+              déplacement → suivante. Dimanche avec Express 10. Lundi sans
+              Express. Lundi : PortAventura jusqu’à la fermeture et Ferrari Land
+              le soir. Mardi, le plus calme, journée entière à PortAventura.
             </p>
           </div>
-          <ItineraryTimeline day="sun" title="Domingo 20 · Express 10" />
-          <ItineraryTimeline day="mon" title="Lunes 21 · PA + Ferrari Land" />
-          <ItineraryTimeline day="tue" title="Martes 22 · PortAventura entero" />
+          <ItineraryTimeline day="sun" title="Dimanche 20 · Express 10" />
+          <ItineraryTimeline day="mon" title="Lundi 21 · PA + Ferrari Land" />
+          <ItineraryTimeline day="tue" title="Mardi 22 · PortAventura entier" />
         </section>
 
         <section id="ferrari" className="scroll-mt-28 space-y-3">
@@ -204,9 +206,9 @@ export function Planner() {
           <Card className="border-zinc-200 shadow-sm">
             <CardContent className="space-y-2 pt-5 text-[13px] leading-relaxed">
               <p>
-                Horario previsto: <strong>{FERRARI_LAND.hours}</strong> ·
-                afluencia Queue-Times ≈ {FERRARI_LAND.crowdQueueTimes} %. Tu
-                Express 10 de PortAventura <strong>no sirve aquí</strong>.
+                Horaire prévu : <strong>{FERRARI_LAND.hours}</strong> ·
+                affluence Queue-Times ≈ {FERRARI_LAND.crowdQueueTimes} %. Ton
+                Express 10 de PortAventura <strong>ne marche pas ici</strong>.
               </p>
               <ul className="list-disc space-y-1 pl-5">
                 {FERRARI_LAND.why.map((w) => (
@@ -219,7 +221,7 @@ export function Planner() {
             <table className="w-full min-w-[640px] text-sm">
               <thead>
                 <tr className="bg-zinc-900 text-white">
-                  <th className="px-3 py-2 text-left text-[11px]">Atracción</th>
+                  <th className="px-3 py-2 text-left text-[11px]">Attraction</th>
                   {FERRARI_MATRIX[0].waits.map((w) => (
                     <th key={w.hour} className="px-2 py-2 text-center text-[11px]">
                       {w.hour}
@@ -273,23 +275,26 @@ export function Planner() {
           <Card className="border-zinc-200 shadow-sm">
             <CardHeader className="pb-2">
               <CardTitle className="text-base">
-                Itinerario Ferrari Land (lunes)
+                Itinéraire Ferrari Land (lundi)
               </CardTitle>
             </CardHeader>
             <CardContent className="overflow-x-auto p-0">
               <table className="w-full text-sm">
                 <thead>
                   <tr className="border-b bg-zinc-50">
-                    <th className="px-3 py-2 text-left">Atracción</th>
-                    <th className="px-2 py-2 text-left">Hora</th>
-                    <th className="px-2 py-2 text-left">Cola estimada</th>
+                    <th className="px-3 py-2 text-left">Attraction</th>
+                    <th className="px-2 py-2 text-left">Heure</th>
+                    <th className="px-2 py-2 text-left">File estimée</th>
                   </tr>
                 </thead>
                 <tbody>
                   {FERRARI_LAND.itinerary.map((r) => (
                     <tr key={r.name + r.hour} className="border-t">
                       <td className={cn("px-3 py-2", r.priority && "font-bold")}>
-                        {r.name}
+                        <span className="inline-flex flex-wrap items-center gap-1">
+                          {r.name}
+                          {r.singleRider && <SingleRiderTag />}
+                        </span>
                       </td>
                       <td className="px-2 py-2 font-bold">{r.hour}</td>
                       <td className="px-2 py-2">{r.wait} min</td>
@@ -302,7 +307,7 @@ export function Planner() {
         </section>
 
         <section id="fuentes" className="scroll-mt-28 space-y-3">
-          <h2 className="text-xl font-bold">Fuentes y tipo de dato</h2>
+          <h2 className="text-xl font-bold">Sources et type de donnée</h2>
           <div className="space-y-2">
             {SOURCES.map((s) => (
               <Card key={s.url} className="border-zinc-200 shadow-sm">
@@ -328,10 +333,10 @@ export function Planner() {
           </div>
           <Separator />
           <p className="text-[12px] text-zinc-500">
-            {RIDES.length} atracciones modeladas. Las cifras de cada celda son
-            estimaciones calculadas (redondeo a 5 min). Contrasta siempre con
-            la app oficial de PortAventura World el mismo día: una avería de
-            Uncharted o un pasaje de Halloween cambia el mapa en diez minutos.
+            {RIDES.length} attractions modélisées. Les chiffres de chaque case
+            sont des estimations calculées (arrondi à 5 min). Recoupe toujours
+            avec l’app officielle de PortAventura World le jour même : une panne
+            d’Uncharted ou un passage Halloween change la carte en dix minutes.
           </p>
         </section>
       </main>
@@ -342,17 +347,17 @@ export function Planner() {
 function Disclaimer() {
   return (
     <div className="rounded-xl border border-amber-300 bg-amber-50 px-4 py-3 text-[13px] text-amber-950">
-      <strong>No son datos oficiales.</strong> Horarios: previsión Queue-Times /
-      Pafans contrastada con el calendario oficial (sujeto a cambio). Colas:
-      estimación a partir de históricas 2026 + patrón horario + afluencia
-      prevista. Confirma horarios en{" "}
+      <strong>Ce ne sont pas des données officielles.</strong> Horaires : prévision
+      Queue-Times / Pafans recoupée avec le calendrier officiel (sous réserve de
+      changement). Files : estimation à partir des historiques 2026 + profil
+      horaire + affluence prévue. Confirme les horaires sur{" "}
       <a
         className="underline"
         href="https://www.portaventuraworld.com/horarios-calendario"
       >
         portaventuraworld.com/horarios-calendario
       </a>{" "}
-      y colas en la app del parque.
+      et les files dans l’app du parc.
     </div>
   );
 }
@@ -367,16 +372,16 @@ function CrowdCard({ id }: { id: DayId }) {
         </div>
         <div className="mt-1 text-3xl font-bold">{d.crowdQueueTimesEs}%</div>
         <div className="text-[12px] text-zinc-500">
-          afluencia prevista · Queue-Times
+          affluence prévue · Queue-Times
         </div>
         <div className="mt-2 space-y-1 text-[12px] text-zinc-600">
           <div>
-            Horario PA: <strong>{d.parkHours}</strong>
+            Horaires PA : <strong>{d.parkHours}</strong>
           </div>
           <div>
-            Halloween: sí · Express: {d.express ? "sí (10)" : "no"}
+            Halloween : oui · Express : {d.express ? "oui (10)" : "non"}
           </div>
-          <div>Tú partías de {d.crowdUser} %</div>
+          <div>Tu partais de {d.crowdUser} %</div>
         </div>
       </CardContent>
     </Card>
@@ -391,8 +396,8 @@ function DayHeading({ id }: { id: DayId }) {
         {d.label} · {d.date}
       </h2>
       <p className="text-[13px] text-zinc-500">
-        {d.parkHours} · afluencia {d.crowdQueueTimesEs}% ·{" "}
-        {d.express ? "Express 10 activo" : "sin Express"}
+        {d.parkHours} · affluence {d.crowdQueueTimesEs}% ·{" "}
+        {d.express ? "Express 10 actif" : "sans Express"}
       </p>
     </div>
   );
@@ -417,8 +422,8 @@ function Legend() {
         </span>
       ))}
       <span className="text-zinc-500">
-        El color se calcula por atracción (mínimo de la fila = verde, máximo =
-        rojo).
+        La couleur se calcule par attraction (minimum de la ligne = vert, maximum =
+        rouge).
       </span>
     </div>
   );
@@ -434,23 +439,23 @@ function ExpressPanel({
   return (
     <Card className="border-amber-200 bg-amber-50/60 shadow-sm">
       <CardHeader className="pb-2">
-        <CardTitle className="text-base">Ahorro Express 10 · domingo</CardTitle>
+        <CardTitle className="text-base">Gain Express 10 · dimanche</CardTitle>
       </CardHeader>
       <CardContent className="space-y-3 text-[13px]">
         <p>
-          Express ≠ 0 min. Estimación efectiva 3–8 min (escaneo + merge; Templo
-          espera al siguiente pase). Angkor prevista cerrada: el parque puede
-          sustituirla; de momento el itinerario usa <strong>9 de 10</strong>.
+          Express ≠ 0 min. Estimation effective 3–8 min (scan + merge ; Templo
+          attend la séance suivante). Angkor prévue fermée : le parc peut la
+          remplacer ; pour l’instant l’itinéraire utilise <strong>9 sur 10</strong>.
         </p>
         <div className="overflow-x-auto">
           <table className="w-full min-w-[520px] text-[12px]">
             <thead>
               <tr className="text-left text-zinc-500">
-                <th className="py-1">Atracción</th>
-                <th>Hora plan</th>
+                <th className="py-1">Attraction</th>
+                <th>Heure plan</th>
                 <th>Normal</th>
                 <th>Express</th>
-                <th>Ahorro</th>
+                <th>Gain</th>
               </tr>
             </thead>
             <tbody>
@@ -458,7 +463,7 @@ function ExpressPanel({
                 <tr key={r.ride.id} className="border-t border-amber-200/80">
                   <td className="py-1.5 font-medium">{r.ride.name}</td>
                   <td>{r.hour}</td>
-                  <td>{r.available ? `${r.normal} min` : "cerrada"}</td>
+                  <td>{r.available ? `${r.normal} min` : "fermée"}</td>
                   <td>{r.express == null ? "—" : `${r.express} min`}</td>
                   <td className="font-bold text-emerald-800">
                     {r.saved ? `${r.saved} min` : "—"}
@@ -470,25 +475,25 @@ function ExpressPanel({
         </div>
         <div className="grid gap-2 sm:grid-cols-3">
           <Stat
-            label="Cola normal (itinerario, 9 atracciones)"
+            label="File normale (itinéraire, 9 attractions)"
             value={`${savings.totalNormal} min`}
           />
           <Stat
-            label="Con Express"
+            label="Avec Express"
             value={`${savings.totalExpress} min`}
           />
           <Stat
-            label="Ahorrado"
+            label="Économisé"
             value={`${savings.totalSaved} min (~${Math.round(savings.totalSaved / 60)} h ${savings.totalSaved % 60} min)`}
           />
         </div>
         <p className="text-zinc-600">
-          Si hicieras esas mismas atracciones en su peor hora del domingo, sin
-          Express: <strong>{peak.totalNormal} min</strong> vs{" "}
-          <strong>{peak.totalExpress} min</strong> con Express (ahorro{" "}
-          <strong>{peak.totalSaved} min</strong>). El itinerario no persigue ese
-          máximo teórico: combina Uncharted/Hurakan/Street sin Express a
-          primera/última hora.
+          Si tu faisais ces mêmes attractions à leur pire heure du dimanche, sans
+          Express : <strong>{peak.totalNormal} min</strong> vs{" "}
+          <strong>{peak.totalExpress} min</strong> avec Express (gain{" "}
+          <strong>{peak.totalSaved} min</strong>). L’itinéraire ne vise pas ce
+          maximum théorique : il combine Uncharted/Hurakan/Street sans Express en
+          première/dernière heure.
         </p>
       </CardContent>
     </Card>

@@ -85,7 +85,7 @@ const PALETTE: Record<string, ZonePalette> = {
     header: "bg-red-600 text-white",
     ring: "ring-red-500",
   },
-  "Anillo del lago": {
+  "Anneau du lac": {
     chip: "bg-sky-400 text-sky-950",
     bar: "bg-sky-500",
     banner: "bg-sky-300",
@@ -97,7 +97,7 @@ const PALETTE: Record<string, ZonePalette> = {
 
 export function splitZones(zone?: string): string[] {
   if (!zone) return [];
-  return zone.split(/\s+o\s+/).map((z) => z.trim()).filter(Boolean);
+  return zone.split(/\s+(?:o|ou)\s+/).map((z) => z.trim()).filter(Boolean);
 }
 
 export function zonePalette(zone?: string): ZonePalette {
@@ -106,13 +106,13 @@ export function zonePalette(zone?: string): ZonePalette {
 }
 
 export function zoneAction(kind: StepKind, title: string): ZoneAction {
-  if (kind === "walk" && !/misma zona/i.test(title)) return "go";
+  if (kind === "walk" && !/même zone|misma zona/i.test(title)) return "go";
   if (kind === "note") return "go";
   return "stay";
 }
 
 export function zoneVerb(action: ZoneAction): string {
-  return action === "go" ? "Ve a" : "Estás en";
+  return action === "go" ? "Va vers" : "Tu es à";
 }
 
 export function zonesMatch(here: string | undefined, other: string | undefined) {

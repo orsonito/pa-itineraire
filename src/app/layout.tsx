@@ -16,7 +16,7 @@ const fraunces = Fraunces({
 export const metadata: Metadata = {
   title: "Plan PortAventura",
   description:
-    "Itinerario y colas para PortAventura 20–22 septiembre 2026. PWA para el teléfono.",
+    "Itinéraire et files d’attente pour PortAventura 20–22 septembre 2026. PWA pour le téléphone.",
   applicationName: "Plan PortAventura",
   appleWebApp: {
     capable: true,
@@ -44,7 +44,7 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
-      lang="es"
+      lang="fr"
       className={`${geist.variable} ${fraunces.variable} h-full antialiased`}
     >
       <body className="min-h-dvh flex flex-col">

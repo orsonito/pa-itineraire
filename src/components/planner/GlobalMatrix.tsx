@@ -1,6 +1,7 @@
 "use client";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { SingleRiderTag } from "@/components/app/ExpressTag";
 import {
   bestHours,
   DAYS,
@@ -18,7 +19,7 @@ function bestDayFor(ride: Ride): { day: DayId; wait: number; hours: string } {
     })
     .filter((x): x is { day: DayId; wait: number; hours: string } => x != null);
   if (options.length === 0) {
-    return { day: "tue", wait: 999, hours: "No opera" };
+    return { day: "tue", wait: 999, hours: "N’opère pas" };
   }
   options.sort((a, b) => a.wait - b.wait || (a.day === "tue" ? -1 : 1));
   return options[0];
@@ -29,25 +30,25 @@ export function GlobalMatrix() {
     <Card className="border-zinc-200 shadow-sm">
       <CardHeader className="pb-2">
         <CardTitle className="text-base">
-          Comparativa de los tres días
+          Comparatif des trois jours
         </CardTitle>
         <p className="text-[12px] font-normal text-zinc-500">
-          Mejor ventana de cada día (estimación). El color de «Mejor día» mira
-          la cola más baja de esa atracción entre el 20, 21 y 22.
+          Meilleure fenêtre de chaque jour (estimation). La couleur de « Meilleur jour »
+          regarde la file la plus basse de cette attraction entre le 20, 21 et 22.
         </p>
       </CardHeader>
       <CardContent className="overflow-x-auto p-0">
         <table className="w-full min-w-[720px] text-sm">
           <thead>
             <tr className="bg-zinc-900 text-white">
-              <th className="px-3 py-2 text-left text-[11px]">Atracción</th>
-              <th className="px-2 py-2 text-left text-[11px]">Mejor 20/09</th>
-              <th className="px-2 py-2 text-center text-[11px]">Cola</th>
-              <th className="px-2 py-2 text-left text-[11px]">Mejor 21/09</th>
-              <th className="px-2 py-2 text-center text-[11px]">Cola</th>
-              <th className="px-2 py-2 text-left text-[11px]">Mejor 22/09</th>
-              <th className="px-2 py-2 text-center text-[11px]">Cola</th>
-              <th className="px-3 py-2 text-left text-[11px]">Mejor día</th>
+              <th className="px-3 py-2 text-left text-[11px]">Attraction</th>
+              <th className="px-2 py-2 text-left text-[11px]">Meilleur 20/09</th>
+              <th className="px-2 py-2 text-center text-[11px]">File</th>
+              <th className="px-2 py-2 text-left text-[11px]">Meilleur 21/09</th>
+              <th className="px-2 py-2 text-center text-[11px]">File</th>
+              <th className="px-2 py-2 text-left text-[11px]">Meilleur 22/09</th>
+              <th className="px-2 py-2 text-center text-[11px]">File</th>
+              <th className="px-3 py-2 text-left text-[11px]">Meilleur jour</th>
             </tr>
           </thead>
           <tbody>
@@ -71,13 +72,23 @@ export function GlobalMatrix() {
                         EX10
                       </span>
                     )}
+                    {ride.singleRider && (
+                      <span className="ml-1 inline-flex align-middle">
+                        <SingleRiderTag />
+                      </span>
+                    )}
+                    {ride.optional && (
+                      <span className="ml-1 text-[10px] font-bold text-violet-700">
+                        OPT.
+                      </span>
+                    )}
                   </td>
                   <DayCols b={sun} isMin={sun?.wait === min} />
                   <DayCols b={mon} isMin={mon?.wait === min} />
                   <DayCols b={tue} isMin={tue?.wait === min} />
                   <td className="px-3 py-2 font-bold text-emerald-800">
-                    {winner.hours === "No opera"
-                      ? "No opera"
+                    {winner.hours === "N’opère pas"
+                      ? "N’opère pas"
                       : `${DAYS[winner.day].label} · ${winner.hours} (${winner.wait} min)`}
                   </td>
                 </tr>
@@ -100,7 +111,7 @@ function DayCols({
   if (!b) {
     return (
       <>
-        <td className="px-2 py-2 text-[12px] text-zinc-400">No opera</td>
+        <td className="px-2 py-2 text-[12px] text-zinc-400">N’opère pas</td>
         <td className="px-2 py-2 text-center text-zinc-400">—</td>
       </>
     );
