@@ -2,11 +2,13 @@
 
 import { GlobalMatrix } from "@/components/planner/GlobalMatrix";
 import { DAYS, TONE_CLASS, TONE_LABEL, type DayId, type WaitTone } from "@/data/wait-model";
+import { href } from "@/lib/nav";
 import { cn } from "@/lib/utils";
+import { NavLink } from "./NavLink";
 import { useVisit } from "./VisitProvider";
 
 export function TabDias() {
-  const { day, setDay, setTab } = useVisit();
+  const { day } = useVisit();
   return (
     <div className="space-y-4">
       <p className="text-[13px] text-zinc-600">
@@ -18,15 +20,11 @@ export function TabDias() {
           const d = DAYS[id];
           const active = day === id;
           return (
-            <button
+            <NavLink
               key={id}
-              type="button"
-              onClick={() => {
-                setDay(id);
-                setTab("ruta");
-              }}
+              href={href("ruta", id)}
               className={cn(
-                "w-full touch-manipulation rounded-2xl p-4 text-left ring-1",
+                "block w-full cursor-pointer touch-manipulation rounded-2xl p-4 text-left ring-1",
                 active
                   ? "bg-teal-900 text-white ring-teal-900"
                   : "bg-white ring-zinc-200"
@@ -45,7 +43,7 @@ export function TabDias() {
                 {d.parkHours} · {d.express ? "Express 10" : "sin Express"}
                 {id === "mon" ? " · Ferrari Land 16:30" : ""}
               </div>
-            </button>
+            </NavLink>
           );
         })}
       </div>

@@ -7,6 +7,8 @@ import { TabFerrari } from "./TabFerrari";
 import { TabMas } from "./TabMas";
 import { BottomNav } from "./BottomNav";
 import { VisitProvider, useVisit } from "./VisitProvider";
+import type { TabId } from "@/lib/nav";
+import type { DayId } from "@/data/wait-model";
 
 function Screen() {
   const { tab, dayMeta } = useVisit();
@@ -49,9 +51,9 @@ function tabTitle(tab: string) {
   return "Más";
 }
 
-export function AppShell() {
+export function AppShell({ tab, day }: { tab: TabId; day: DayId }) {
   return (
-    <VisitProvider>
+    <VisitProvider tab={tab} day={day}>
       <Screen />
     </VisitProvider>
   );

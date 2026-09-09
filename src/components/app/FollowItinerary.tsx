@@ -104,7 +104,7 @@ export function FollowItinerary() {
             <button
               type="button"
               onClick={() => markDone(current)}
-              className="mt-4 flex min-h-12 w-full touch-manipulation items-center justify-center gap-2 rounded-xl bg-amber-400 text-base font-bold text-teal-950 active:scale-[0.99]"
+              className="mt-4 flex min-h-12 w-full cursor-pointer touch-manipulation items-center justify-center gap-2 rounded-xl bg-amber-400 text-base font-bold text-teal-950 active:scale-[0.99]"
             >
               <Check className="size-5" />
               Hecho · siguiente

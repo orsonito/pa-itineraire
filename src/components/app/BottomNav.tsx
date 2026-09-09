@@ -1,6 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
+import { href } from "@/lib/nav";
 import {
   CalendarDays,
   Flag,
@@ -8,6 +9,7 @@ import {
   MoreHorizontal,
   Timer,
 } from "lucide-react";
+import { NavLink } from "./NavLink";
 import { useVisit, type TabId } from "./VisitProvider";
 
 const TABS: { id: TabId; label: string; icon: typeof Timer }[] = [
@@ -19,7 +21,7 @@ const TABS: { id: TabId; label: string; icon: typeof Timer }[] = [
 ];
 
 export function BottomNav() {
-  const { tab, setTab } = useVisit();
+  const { tab, day } = useVisit();
   return (
     <nav
       className="fixed inset-x-0 bottom-0 z-50 border-t border-teal-900/20 bg-teal-900 pb-[env(safe-area-inset-bottom)] text-teal-100"
@@ -30,18 +32,18 @@ export function BottomNav() {
           const Icon = item.icon;
           const active = tab === item.id;
           return (
-            <button
+            <NavLink
               key={item.id}
-              type="button"
-              onClick={() => setTab(item.id)}
+              href={href(item.id, day)}
+              ariaCurrent={active ? "page" : undefined}
               className={cn(
-                "flex min-h-[56px] touch-manipulation flex-col items-center justify-center gap-0.5 pt-1",
+                "relative z-50 flex min-h-[56px] w-full cursor-pointer touch-manipulation flex-col items-center justify-center gap-0.5 pt-1",
                 active ? "text-amber-300" : "text-teal-200"
               )}
             >
               <Icon className={cn("size-5", active && "stroke-[2.5]")} />
               <span className="text-[10px] font-semibold">{item.label}</span>
-            </button>
+            </NavLink>
           );
         })}
       </div>

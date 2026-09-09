@@ -2,11 +2,11 @@
 
 import { FERRARI_LAND, FERRARI_MATRIX } from "@/data/ferrari";
 import { TONE_CLASS, type WaitTone } from "@/data/wait-model";
+import { href } from "@/lib/nav";
 import { cn } from "@/lib/utils";
-import { useVisit } from "./VisitProvider";
+import { NavLink } from "./NavLink";
 
 export function TabFerrari() {
-  const { setDay, setTab } = useVisit();
   return (
     <div className="space-y-4">
       <div className="rounded-2xl bg-red-800 p-4 text-white">
@@ -18,16 +18,12 @@ export function TabFerrari() {
           {FERRARI_LAND.hours} · afluencia ~{FERRARI_LAND.crowdQueueTimes}% · tu
           Express 10 de PortAventura <strong>no vale</strong>
         </p>
-        <button
-          type="button"
-          onClick={() => {
-            setDay("mon");
-            setTab("ruta");
-          }}
-          className="mt-3 min-h-11 w-full rounded-xl bg-white text-sm font-bold text-red-800"
+        <NavLink
+          href={href("ruta", "mon")}
+          className="mt-3 flex min-h-11 w-full cursor-pointer items-center justify-center rounded-xl bg-white text-sm font-bold text-red-800"
         >
           Ver en la ruta del lunes
-        </button>
+        </NavLink>
       </div>
 
       <ol className="space-y-2">

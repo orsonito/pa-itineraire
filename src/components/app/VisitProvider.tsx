@@ -9,67 +9,55 @@ import {
   type ReactNode,
 } from "react";
 import { DAYS, type DayId } from "@/data/wait-model";
+import type { TabId } from "@/lib/nav";
 
-export type TabId = "ruta" | "colas" | "dias" | "ferrari" | "mas";
+export type { TabId };
 
-const TABS: TabId[] = ["ruta", "colas", "dias", "ferrari", "mas"];
 const EMPTY_DONE: Record<DayId, number[]> = { sun: [], mon: [], tue: [] };
 
-function todayDay(): DayId {
-  const now = new Date();
-  if (now.getFullYear() === 2026 && now.getMonth() === 8) {
-    if (now.getDate() === 20) return "sun";
-    if (now.getDate() === 21) return "mon";
-    if (now.getDate() === 22) return "tue";
+let doneRaw = "__init__";
+let doneSnap: Record<DayId, number[]> = EMPTY_DONE;
+
+function readDone(): Record<DayId, number[]> {
+  let raw = "";
+  try {
+    raw = localStorage.getItem("pa-done") ?? "";
+  } catch {
+    return EMPTY_DONE;
   }
-  return "sun";
+  if (raw === doneRaw) return doneSnap;
+  doneRaw = raw;
+  try {
+    doneSnap = raw ? { ...EMPTY_DONE, ...JSON.parse(raw) } : EMPTY_DONE;
+  } catch {
+    doneSnap = EMPTY_DONE;
+  }
+  return doneSnap;
 }
 
-function subscribe(cb: () => void) {
+function subscribeDone(cb: () => void) {
   window.addEventListener("storage", cb);
-  window.addEventListener("pa-local", cb);
+  window.addEventListener("pa-done", cb);
   return () => {
     window.removeEventListener("storage", cb);
-    window.removeEventListener("pa-local", cb);
+    window.removeEventListener("pa-done", cb);
   };
 }
 
-function emit() {
-  window.dispatchEvent(new Event("pa-local"));
-}
-
-let doneCacheKey = "__init__";
-let doneCache: Record<DayId, number[]> = EMPTY_DONE;
-
-function readDay(): DayId {
-  const raw = localStorage.getItem("pa-day") as DayId | null;
-  if (raw && raw in DAYS) return raw;
-  return todayDay();
-}
-
-function readTab(): TabId {
-  const raw = localStorage.getItem("pa-tab") as TabId | null;
-  if (raw && TABS.includes(raw)) return raw;
-  return "ruta";
-}
-
-function readDone(): Record<DayId, number[]> {
-  const raw = localStorage.getItem("pa-done");
-  if (raw === doneCacheKey) return doneCache;
-  doneCacheKey = raw ?? "";
+function writeDone(next: Record<DayId, number[]>) {
+  doneRaw = JSON.stringify(next);
+  doneSnap = next;
   try {
-    doneCache = raw ? { ...EMPTY_DONE, ...JSON.parse(raw) } : EMPTY_DONE;
+    localStorage.setItem("pa-done", doneRaw);
   } catch {
-    doneCache = EMPTY_DONE;
+    /* private mode */
   }
-  return doneCache;
+  window.dispatchEvent(new Event("pa-done"));
 }
 
 type Ctx = {
   tab: TabId;
-  setTab: (t: TabId) => void;
   day: DayId;
-  setDay: (d: DayId) => void;
   done: number[];
   markDone: (index: number) => void;
   undo: () => void;
@@ -79,30 +67,24 @@ type Ctx = {
 
 const VisitContext = createContext<Ctx | null>(null);
 
-export function VisitProvider({ children }: { children: ReactNode }) {
-  const day = useSyncExternalStore(subscribe, readDay, () => "sun" as DayId);
-  const tab = useSyncExternalStore(subscribe, readTab, () => "ruta" as TabId);
-  const allDone = useSyncExternalStore(subscribe, readDone, () => EMPTY_DONE);
-
-  const setTab = useCallback((t: TabId) => {
-    localStorage.setItem("pa-tab", t);
-    emit();
-  }, []);
-
-  const setDay = useCallback((d: DayId) => {
-    localStorage.setItem("pa-day", d);
-    emit();
-  }, []);
+export function VisitProvider({
+  tab,
+  day,
+  children,
+}: {
+  tab: TabId;
+  day: DayId;
+  children: ReactNode;
+}) {
+  const allDone = useSyncExternalStore(subscribeDone, readDone, () => EMPTY_DONE);
 
   const markDone = useCallback(
     (index: number) => {
       const prev = readDone();
-      const next = {
+      writeDone({
         ...prev,
         [day]: [...new Set([...(prev[day] ?? []), index])].sort((a, b) => a - b),
-      };
-      localStorage.setItem("pa-done", JSON.stringify(next));
-      emit();
+      });
     },
     [day]
   );
@@ -111,32 +93,24 @@ export function VisitProvider({ children }: { children: ReactNode }) {
     const prev = readDone();
     const list = [...(prev[day] ?? [])];
     list.pop();
-    localStorage.setItem("pa-done", JSON.stringify({ ...prev, [day]: list }));
-    emit();
+    writeDone({ ...prev, [day]: list });
   }, [day]);
 
   const resetDay = useCallback(() => {
-    const prev = readDone();
-    localStorage.setItem(
-      "pa-done",
-      JSON.stringify({ ...prev, [day]: [] })
-    );
-    emit();
+    writeDone({ ...readDone(), [day]: [] });
   }, [day]);
 
   const value = useMemo<Ctx>(
     () => ({
       tab,
-      setTab,
       day,
-      setDay,
       done: allDone[day] ?? [],
       markDone,
       undo,
       resetDay,
       dayMeta: DAYS[day],
     }),
-    [tab, setTab, day, setDay, allDone, markDone, undo, resetDay]
+    [tab, day, allDone, markDone, undo, resetDay]
   );
 
   return <VisitContext.Provider value={value}>{children}</VisitContext.Provider>;
