@@ -11,7 +11,7 @@ import type { TabId } from "@/lib/nav";
 import type { DayId } from "@/data/wait-model";
 
 function Screen() {
-  const { tab, dayMeta } = useVisit();
+  const { tab, dayMeta, clock, at } = useVisit();
   return (
     <div className="min-h-dvh bg-[#f4efe6] text-zinc-900">
       <header className="sticky top-0 z-40 border-b border-teal-900/10 bg-teal-900 pt-[env(safe-area-inset-top)] text-white">
@@ -24,8 +24,15 @@ function Screen() {
               {tabTitle(tab)}
             </h1>
           </div>
-          <div className="rounded-full bg-white/10 px-2.5 py-1 text-[11px] font-semibold">
-            {dayMeta.label}
+          <div className="text-right">
+            <div className="rounded-full bg-white/10 px-2.5 py-1 text-[11px] font-semibold">
+              {dayMeta.label}
+            </div>
+            {tab === "ruta" && (
+              <div className="mt-1 text-[11px] tabular-nums text-teal-100">
+                {at ? `Simulando ${clock}` : clock}
+              </div>
+            )}
           </div>
         </div>
       </header>
@@ -55,13 +62,23 @@ export function AppShell({
   tab,
   day,
   allDone,
+  at,
+  clock,
 }: {
   tab: TabId;
   day: DayId;
   allDone: Record<DayId, number[]>;
+  at: string | null;
+  clock: string;
 }) {
   return (
-    <VisitProvider tab={tab} day={day} allDone={allDone}>
+    <VisitProvider
+      tab={tab}
+      day={day}
+      allDone={allDone}
+      at={at}
+      clock={clock}
+    >
       <Screen />
     </VisitProvider>
   );

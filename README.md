@@ -21,7 +21,7 @@ Abre [http://localhost:43123](http://localhost:43123).
 
 Pestañas inferiores:
 
-- **Ruta** — paso actual, botón Hecho, siguiente atracción
+- **Ruta** — qué hacer **a esta hora** (Madrid), Hecho, días
 - **Colas** — espera por hora (normal / Express el domingo)
 - **Días** — afluencia y comparativa
 - **Ferrari** — lunes por la tarde

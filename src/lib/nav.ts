@@ -58,10 +58,12 @@ export function withDone(
 export function href(
   tab: TabId,
   day: DayId,
-  done: Record<DayId, number[]> = EMPTY_DONE
+  done: Record<DayId, number[]> = EMPTY_DONE,
+  at?: string | null
 ): string {
   const q = new URLSearchParams({ tab, day });
   const packed = serializeDone(done);
   if (packed) q.set("done", packed);
+  if (at) q.set("at", at);
   return `/?${q.toString()}`;
 }
