@@ -1,6 +1,7 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Fraunces, Geist } from "next/font/google";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { RegisterSW } from "@/components/app/RegisterSW";
 import "./globals.css";
 
 const geist = Geist({
@@ -14,9 +15,30 @@ const fraunces = Fraunces({
 });
 
 export const metadata: Metadata = {
-  title: "Plan PortAventura 20–22 septiembre 2026",
+  title: "Plan PortAventura",
   description:
-    "Matrices de colas, Express 10 e itinerario para PortAventura Park y Ferrari Land.",
+    "Itinerario y colas para PortAventura 20–22 septiembre 2026. PWA para el teléfono.",
+  applicationName: "Plan PortAventura",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "black-translucent",
+    title: "PA Plan",
+  },
+  formatDetection: { telephone: false },
+  icons: {
+    apple: "/icons/apple-touch-icon.png",
+    icon: [
+      { url: "/icons/icon-192.png", sizes: "192x192" },
+      { url: "/icons/icon-512.png", sizes: "512x512" },
+    ],
+  },
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
+  themeColor: "#134e4a",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
@@ -25,8 +47,11 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       lang="es"
       className={`${geist.variable} ${fraunces.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">
-        <TooltipProvider>{children}</TooltipProvider>
+      <body className="min-h-dvh flex flex-col overscroll-none">
+        <TooltipProvider>
+          <RegisterSW />
+          {children}
+        </TooltipProvider>
       </body>
     </html>
   );

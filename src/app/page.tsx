@@ -1,5 +1,5 @@
-import { Planner } from "@/components/planner/Planner";
+import { AppShell } from "@/components/app/AppShell";
 
 export default function Home() {
-  return <Planner />;
+  return <AppShell />;
 }

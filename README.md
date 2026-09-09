@@ -1,8 +1,8 @@
 # Plan PortAventura World · 20–22 septiembre 2026
 
-Planificador de visita a **PortAventura Park** (tres días) y **Ferrari Land** (un único día), con matrices de cola por hora, Express 10 del domingo y un itinerario zona a zona.
+App **PWA para el teléfono**: itinerario paso a paso, colas y Ferrari Land. Instálala en la pantalla de inicio y úsala en el parque (también sin red, con los datos ya cargados).
 
-Las cifras de cada celda son **estimaciones calculadas**, no datos oficiales. Contrasta siempre horarios y colas en la app de PortAventura World el mismo día.
+Las cifras de cola son **estimaciones**, no datos oficiales.
 
 ## Cómo verlo
 
@@ -11,29 +11,31 @@ npm install
 npm run dev
 ```
 
-Abre [http://localhost:43123](http://localhost:43123) (o el puerto que indique la terminal).
+Abre [http://localhost:43123](http://localhost:43123).
 
-Para producción:
+### Instalar en el móvil
+
+1. Abre la URL en Safari (iPhone) o Chrome (Android).
+2. **iPhone:** Compartir → **Añadir a pantalla de inicio**.
+3. **Android:** menú → **Instalar app**, o el botón en la pestaña **Más**.
+
+Pestañas inferiores:
+
+- **Ruta** — paso actual, botón Hecho, siguiente atracción
+- **Colas** — espera por hora (normal / Express el domingo)
+- **Días** — afluencia y comparativa
+- **Ferrari** — lunes por la tarde
+- **Más** — Express, zonas, fuentes, instalar
+
+## Producción
 
 ```bash
 npm run build
 npm start
 ```
 
-## Qué incluye
-
-- Calendario de afluencia contrastado (Queue-Times vs. las cifras de partida 38 / 28 / 22 %)
-- Tablas de cola por hora: domingo (normal / Express), lunes y martes
-- Colores **por atracción** (verde = mejor ventana de esa fila, rojo = peor)
-- Ahorro estimado del Express 10
-- Comparativa de los tres días
-- Itinerario con desplazamientos
-- Ferrari Land el lunes por la tarde (16:30–22:00)
-
-## Fuentes principales
+## Fuentes
 
 - https://www.parquetematico.net/portaventura/cuando-ir
 - https://www.portaventuraworld.com/horarios-calendario
 - https://queue-times.com/es/parks/19/calendar/2026/09
-
-El listado completo está al final de la propia app.
