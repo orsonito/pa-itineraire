@@ -33,6 +33,7 @@ export type LiveAdvice = {
 const KIND_SCORE: Record<ItineraryStep["kind"], number> = {
   ride: 32,
   park: 22,
+  show: 26,
   break: 16,
   walk: 8,
   note: 4,
@@ -81,6 +82,9 @@ function scoreStep(
   const planned = parseMinutes(step.time);
   const lateBy = nowMin - planned;
   if ((step.kind === "walk" || step.kind === "note") && lateBy > 12) {
+    return Number.NEGATIVE_INFINITY;
+  }
+  if (step.kind === "show" && lateBy > 18) {
     return Number.NEGATIVE_INFINITY;
   }
   if (planned > nowMin + 50) return Number.NEGATIVE_INFINITY;

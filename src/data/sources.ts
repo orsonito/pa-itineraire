@@ -41,6 +41,13 @@ export const SOURCES: Source[] = [
     kind: "oficial",
   },
   {
+    title: "Parque Temático — Espectáculos y Halloween",
+    url: "https://www.parquetematico.net/portaventura/espectaculos/",
+    usedFor:
+      "Shows de Halloween (Factory en Gran Teatro Imperial, West Blood Frenzy, Parade, Día de los Muertos, Magic Bubble). Los pases diarios no se publican fijos: se estiman ventanas (media tarde Factory, desfile al cierre) y hay que confirmar en la app.",
+    kind: "guía",
+  },
+  {
     title: "PortAventura World — Halloween 2026",
     url: "https://www.portaventuraworld.com/halloween",
     usedFor: "Fechas oficiales Halloween: 19 septiembre – 15 noviembre 2026. Los tres días de visita caen en Halloween.",

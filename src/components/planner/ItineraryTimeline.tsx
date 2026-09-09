@@ -11,6 +11,7 @@ import {
   Ticket,
   Utensils,
   FerrisWheel,
+  Drama,
 } from "lucide-react";
 
 const ICONS = {
@@ -19,6 +20,7 @@ const ICONS = {
   note: Info,
   park: Ticket,
   ride: FerrisWheel,
+  show: Drama,
 } as const;
 
 const SUBTITLES: Record<DayId, string> = {

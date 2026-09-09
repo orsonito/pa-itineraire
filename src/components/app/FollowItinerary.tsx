@@ -8,6 +8,7 @@ import { cn } from "@/lib/utils";
 import {
   Check,
   Clock,
+  Drama,
   FerrisWheel,
   Footprints,
   Info,
@@ -26,6 +27,7 @@ const ICONS = {
   note: Info,
   park: Ticket,
   ride: FerrisWheel,
+  show: Drama,
 } as const;
 
 const SUBTITLES: Record<string, string> = {
@@ -34,7 +36,7 @@ const SUBTITLES: Record<string, string> = {
   tue: "El más flojo · Uncharted 10:30 · cierra 18:00",
 };
 
-const PRESETS = ["10:30", "12:00", "14:25", "16:30", "18:00"];
+const PRESETS = ["10:30", "12:00", "14:25", "15:30", "18:20"];
 
 export function FollowItinerary() {
   const { tab, day, dayMeta, done, allDone, at, clock, link } = useVisit();
@@ -61,6 +63,9 @@ export function FollowItinerary() {
     withDone(allDone, day, done.slice(0, -1))
   );
   const resetHref = link(tab, day, withDone(allDone, day, []));
+  const shows = steps.filter(
+    (s) => s.kind === "show" || s.title.includes("Día de los Muertos")
+  );
 
   return (
     <div className="space-y-3">
@@ -69,6 +74,28 @@ export function FollowItinerary() {
       <p className="text-center text-[12px] text-zinc-500">
         {dayMeta.parkHours} · {dayMeta.crowdQueueTimesEs}% afluencia
       </p>
+      {shows.length > 0 && (
+        <div className="rounded-2xl bg-fuchsia-50 p-3 ring-1 ring-fuchsia-200">
+          <div className="text-[11px] font-semibold tracking-wide text-fuchsia-900 uppercase">
+            Espectáculos (pases estimados)
+          </div>
+          <ul className="mt-1.5 space-y-1">
+            {shows.map((s) => (
+              <li key={s.time + s.title} className="text-[13px] text-fuchsia-950">
+                <span className="font-bold tabular-nums">{s.time}</span>{" "}
+                {s.title}
+                {s.zone ? (
+                  <span className="text-fuchsia-800"> · {s.zone}</span>
+                ) : null}
+              </li>
+            ))}
+          </ul>
+          <p className="mt-1.5 text-[11px] text-fuchsia-800">
+            Confirma el pase exacto en la app de PortAventura. Si no hay
+            función, sigue la ruta de atracciones.
+          </p>
+        </div>
+      )}
 
       <form
         method="get"
@@ -141,6 +168,11 @@ export function FollowItinerary() {
         </div>
         <div className="mt-1 flex flex-wrap items-center gap-1.5 text-[13px] text-teal-100">
           {step.zone && <span>{step.zone}</span>}
+          {step.kind === "show" && (
+            <Badge className="h-5 bg-fuchsia-200 px-1.5 text-[10px] text-fuchsia-950">
+              Espectáculo
+            </Badge>
+          )}
           {step.express && (
             <Badge className="h-5 bg-amber-400 px-1.5 text-[10px] text-teal-950">
               Express
@@ -292,6 +324,11 @@ function StepRow({
             </span>
             {step.express && (
               <span className="text-[10px] font-bold text-amber-700">EX</span>
+            )}
+            {step.kind === "show" && (
+              <span className="text-[10px] font-bold text-fuchsia-800">
+                SHOW
+              </span>
             )}
             {active && (
               <span className="text-[10px] font-bold text-teal-800">AHORA</span>
