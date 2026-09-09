@@ -17,6 +17,7 @@ import {
   Undo2,
   Utensils,
 } from "lucide-react";
+import { ExpressTag, NoExpressTag } from "./ExpressTag";
 import { DayChips } from "./DayChips";
 import { NavLink } from "./NavLink";
 import { useVisit } from "./VisitProvider";
@@ -31,7 +32,7 @@ const ICONS = {
 } as const;
 
 const SUBTITLES: Record<string, string> = {
-  sun: "Express 10 · Uncharted primero · Hurakan y Street al final",
+  sun: "Express 10 · tag ámbar = úsalo · Uncharted / Hurakan / Street sin Express",
   mon: "Sin Express · a las 15:50 te vas a Ferrari Land",
   tue: "El más flojo · Uncharted 10:30 · cierra 18:00",
 };
@@ -163,19 +164,19 @@ export function FollowItinerary() {
         <div className="mt-2 text-4xl font-bold tabular-nums leading-none">
           {step.time}
         </div>
-        <div className="mt-2 text-xl font-bold leading-tight">
-          {advice.headline}
+        <div className="mt-2 flex flex-wrap items-center gap-2 text-xl font-bold leading-tight">
+          <span>{advice.headline}</span>
+          {step.express ? (
+            <ExpressTag n={step.expressUse} />
+          ) : day === "sun" && step.kind === "ride" ? (
+            <NoExpressTag className="bg-white/20 text-teal-50" />
+          ) : null}
         </div>
         <div className="mt-1 flex flex-wrap items-center gap-1.5 text-[13px] text-teal-100">
           {step.zone && <span>{step.zone}</span>}
           {step.kind === "show" && (
             <Badge className="h-5 bg-fuchsia-200 px-1.5 text-[10px] text-fuchsia-950">
               Espectáculo
-            </Badge>
-          )}
-          {step.express && (
-            <Badge className="h-5 bg-amber-400 px-1.5 text-[10px] text-teal-950">
-              Express
             </Badge>
           )}
         </div>
@@ -202,6 +203,12 @@ export function FollowItinerary() {
             <span className="font-semibold text-white">
               {next.time} {next.title}
             </span>
+            {next.express && (
+              <>
+                {" "}
+                <ExpressTag n={next.expressUse} />
+              </>
+            )}
           </div>
         )}
         {!atEnd && advice.status !== "closed" && (
@@ -267,6 +274,7 @@ export function FollowItinerary() {
             }
             active={i === advice.index}
             done={doneSet.has(i)}
+            sunday={day === "sun"}
           />
         ))}
       </ol>
@@ -279,11 +287,13 @@ function StepRow({
   active,
   done,
   href: rowHref,
+  sunday,
 }: {
   step: ItineraryStep;
   active: boolean;
   done: boolean;
   href: string;
+  sunday: boolean;
 }) {
   const Icon = ICONS[step.kind];
   return (
@@ -322,9 +332,11 @@ function StepRow({
             >
               {step.title}
             </span>
-            {step.express && (
-              <span className="text-[10px] font-bold text-amber-700">EX</span>
-            )}
+            {step.express ? (
+              <ExpressTag n={step.expressUse} />
+            ) : sunday && step.kind === "ride" ? (
+              <NoExpressTag />
+            ) : null}
             {step.kind === "show" && (
               <span className="text-[10px] font-bold text-fuchsia-800">
                 SHOW

@@ -12,6 +12,8 @@ export type ItineraryStep = {
   next?: string;
   note?: string;
   express?: boolean;
+  /** 1–9 on Sunday: which Express 10 use (Angkor closed). */
+  expressUse?: number;
   priority?: boolean;
 };
 
@@ -55,6 +57,7 @@ export const SUNDAY_ITINERARY: ItineraryStep[] = [
     zone: "Far West",
     wait: "15 min normal / 4 min Express",
     express: true,
+    expressUse: 1,
     note: "Express 10 · 1/9 (Angkor prevista cerrada).",
   },
   {
@@ -64,6 +67,7 @@ export const SUNDAY_ITINERARY: ItineraryStep[] = [
     zone: "Far West",
     wait: "20 min / 3 min Express",
     express: true,
+    expressUse: 2,
     note: "Abre ~11:00. Express 10 · 2/9. Si la cola regular ya se parte en rojo/azul, da igual: tú vas por Express.",
   },
   {
@@ -73,6 +77,7 @@ export const SUNDAY_ITINERARY: ItineraryStep[] = [
     zone: "Far West",
     wait: "30 min / 4 min Express",
     express: true,
+    expressUse: 3,
     note: "Express 10 · 3/9. Te mojas: bolsa estanca o déjala si hace fresco.",
   },
   {
@@ -90,6 +95,7 @@ export const SUNDAY_ITINERARY: ItineraryStep[] = [
     zone: "México",
     wait: "25 min / 3 min Express",
     express: true,
+    expressUse: 4,
     note: "Express 10 · 4/9.",
   },
   {
@@ -99,6 +105,7 @@ export const SUNDAY_ITINERARY: ItineraryStep[] = [
     zone: "México",
     wait: "30 min / 5–8 min Express",
     express: true,
+    expressUse: 5,
     note: "Express 10 · 5/9. Previsto abierto (domingo). Express = siguiente pase, no 0 min. Si está cerrado, pasa a Shambhala.",
   },
   {
@@ -116,6 +123,7 @@ export const SUNDAY_ITINERARY: ItineraryStep[] = [
     zone: "China",
     wait: "45 min / 3–4 min Express",
     express: true,
+    expressUse: 6,
     priority: true,
     note: "Express 10 · 6/9. Aquí el ahorro es enorme: no la hagas en cola normal a mediodía.",
   },
@@ -126,6 +134,7 @@ export const SUNDAY_ITINERARY: ItineraryStep[] = [
     zone: "China",
     wait: "40 min / 3–4 min Express",
     express: true,
+    expressUse: 7,
     priority: true,
     note: "Express 10 · 7/9. Plaza de China, 2 min a pie desde Shambhala.",
   },
@@ -144,6 +153,7 @@ export const SUNDAY_ITINERARY: ItineraryStep[] = [
     zone: "Polynesia",
     wait: "30 min / 4 min Express",
     express: true,
+    expressUse: 8,
     note: "Express 10 · 8/9. Pico de calor = pico de agua; Express lo amortiza.",
   },
   {
@@ -161,6 +171,7 @@ export const SUNDAY_ITINERARY: ItineraryStep[] = [
     zone: "Mediterrània",
     wait: "50 min / 3–5 min Express",
     express: true,
+    expressUse: 9,
     priority: true,
     note: "Express 10 · 9/9. No la hagas a las 10:30 con Express: ahorras más usándola en el pico. Si hay Single Rider y sois flexibles, aún más rápido.",
   },

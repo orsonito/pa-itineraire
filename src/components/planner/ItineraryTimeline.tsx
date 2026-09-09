@@ -1,6 +1,6 @@
 "use client";
 
-import { Badge } from "@/components/ui/badge";
+import { ExpressTag, NoExpressTag } from "@/components/app/ExpressTag";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ITINERARIES, type ItineraryStep } from "@/data/itineraries";
 import type { DayId } from "@/data/wait-model";
@@ -24,7 +24,7 @@ const ICONS = {
 } as const;
 
 const SUBTITLES: Record<DayId, string> = {
-  sun: "Uncharted al abrir · Express en el pico · Hurakan y Street a última hora",
+  sun: "Tag ámbar = usa Express 10 · Uncharted / Hurakan / Street sin Express",
   mon: "Sin Express · PortAventura hasta las 15:50 · Ferrari Land 16:30–22:00",
   tue: "Día más flojo · Uncharted a las 10:30 · cierre 18:00 · sin Ferrari Land",
 };
@@ -47,14 +47,22 @@ export function ItineraryTimeline({
       </CardHeader>
       <CardContent className="space-y-0">
         {steps.map((step, i) => (
-          <Step key={`${step.time}-${i}`} step={step} last={i === steps.length - 1} />
+          <Step key={`${step.time}-${i}`} step={step} last={i === steps.length - 1} sunday={day === "sun"} />
         ))}
       </CardContent>
     </Card>
   );
 }
 
-function Step({ step, last }: { step: ItineraryStep; last: boolean }) {
+function Step({
+  step,
+  last,
+  sunday,
+}: {
+  step: ItineraryStep;
+  last: boolean;
+  sunday: boolean;
+}) {
   const Icon = ICONS[step.kind];
   return (
     <div className="flex gap-3">
@@ -86,11 +94,11 @@ function Step({ step, last }: { step: ItineraryStep; last: boolean }) {
           >
             {step.title}
           </span>
-          {step.express && (
-            <Badge className="h-5 bg-amber-500 px-1.5 text-[10px] text-white">
-              Express
-            </Badge>
-          )}
+          {step.express ? (
+            <ExpressTag n={step.expressUse} />
+          ) : sunday && step.kind === "ride" ? (
+            <NoExpressTag />
+          ) : null}
           {step.zone && (
             <span className="text-[11px] text-zinc-500">{step.zone}</span>
           )}
