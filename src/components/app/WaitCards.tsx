@@ -8,18 +8,28 @@ import {
   rideRow,
   type Cell,
 } from "@/data/wait-model";
+import { advise } from "@/lib/live-plan";
+import { zonePalette, zonesMatch } from "@/lib/zones";
 import { cn } from "@/lib/utils";
 import { DayChips } from "./DayChips";
+import { ZoneTag } from "./ZoneMark";
 import { useVisit } from "./VisitProvider";
 
 export function WaitCards() {
-  const { day } = useVisit();
+  const { day, done, clock } = useVisit();
   const meta = DAYS[day];
   const showExpress = day === "sun";
+  const hereZone = advise(day, done, clock).step.zone;
 
   return (
     <div className="space-y-3">
       <DayChips />
+      {hereZone && (
+        <p className="text-[13px] font-semibold text-zinc-800">
+          Resaltadas las de{" "}
+          <ZoneTag zone={hereZone} strong /> — zona de ahora en la ruta.
+        </p>
+      )}
       <p className="text-[12px] text-zinc-500">
         {showExpress
           ? "Cada recuadro: cola normal / Express (min). Color = mejor/peor hora de ESA atracción."
@@ -30,10 +40,15 @@ export function WaitCards() {
         {RIDES.map((ride) => {
           const cells = rideRow(ride, day);
           const closed = cells.every((c) => c.normal == null);
+          const here = zonesMatch(hereZone, ride.zone);
+          const pal = zonePalette(ride.zone);
           return (
             <article
               key={ride.id}
-              className="rounded-2xl bg-white p-3 ring-1 ring-zinc-200"
+              className={cn(
+                "rounded-2xl bg-white p-3 ring-1",
+                here ? ["ring-2", pal.ring] : "ring-zinc-200"
+              )}
             >
               <div className="flex items-start justify-between gap-2">
                 <div>
@@ -51,8 +66,15 @@ export function WaitCards() {
                         EX10
                       </span>
                     )}
+                    {here && (
+                      <span className="text-[10px] font-bold text-teal-800">
+                        AHORA
+                      </span>
+                    )}
                   </div>
-                  <div className="text-[11px] text-zinc-500">{ride.zone}</div>
+                  <div className="mt-1">
+                    <ZoneTag zone={ride.zone} />
+                  </div>
                 </div>
                 <div className="text-right text-[11px] font-bold text-emerald-800">
                   {closed ? "No opera" : formatBest(ride, day)}

@@ -1,6 +1,7 @@
 "use client";
 
 import { ExpressTag, NoExpressTag } from "@/components/app/ExpressTag";
+import { ZoneTag } from "@/components/app/ZoneMark";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ITINERARIES, type ItineraryStep } from "@/data/itineraries";
 import type { DayId } from "@/data/wait-model";
@@ -99,9 +100,7 @@ function Step({
           ) : sunday && step.kind === "ride" ? (
             <NoExpressTag />
           ) : null}
-          {step.zone && (
-            <span className="text-[11px] text-zinc-500">{step.zone}</span>
-          )}
+          <ZoneTag zone={step.zone} />
         </div>
         <div className="mt-0.5 space-y-0.5 text-[12px] text-zinc-600">
           {step.wait && (

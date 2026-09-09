@@ -21,6 +21,8 @@ import { ExpressTag, NoExpressTag } from "./ExpressTag";
 import { DayChips } from "./DayChips";
 import { NavLink } from "./NavLink";
 import { useVisit } from "./VisitProvider";
+import { ZoneBanner, ZoneBar, ZoneTag } from "./ZoneMark";
+import { zoneAction, zonePalette, zonesMatch } from "@/lib/zones";
 
 const ICONS = {
   walk: Footprints,
@@ -161,6 +163,7 @@ export function FollowItinerary() {
             {clock} · {done.length}/{steps.length}
           </span>
         </div>
+        <ZoneBanner zone={step.zone} kind={step.kind} title={step.title} />
         <div className="mt-2 text-4xl font-bold tabular-nums leading-none">
           {step.time}
         </div>
@@ -172,14 +175,13 @@ export function FollowItinerary() {
             <NoExpressTag className="bg-white/20 text-teal-50" />
           ) : null}
         </div>
-        <div className="mt-1 flex flex-wrap items-center gap-1.5 text-[13px] text-teal-100">
-          {step.zone && <span>{step.zone}</span>}
-          {step.kind === "show" && (
+        {step.kind === "show" && (
+          <div className="mt-1">
             <Badge className="h-5 bg-fuchsia-200 px-1.5 text-[10px] text-fuchsia-950">
               Espectáculo
             </Badge>
-          )}
-        </div>
+          </div>
+        )}
         {advice.waitNow && (
           <div className="mt-3 rounded-xl bg-white/10 px-3 py-2 text-[15px]">
             Cola est. <span className="font-bold">{advice.waitNow}</span>
@@ -207,6 +209,12 @@ export function FollowItinerary() {
               <>
                 {" "}
                 <ExpressTag n={next.expressUse} />
+              </>
+            )}
+            {next.zone && (
+              <>
+                {" "}
+                <ZoneTag zone={next.zone} />
               </>
             )}
           </div>
@@ -275,6 +283,7 @@ export function FollowItinerary() {
             active={i === advice.index}
             done={doneSet.has(i)}
             sunday={day === "sun"}
+            here={sameZoneBlock(steps, advice.index, i, doneSet)}
           />
         ))}
       </ol>
@@ -288,12 +297,14 @@ function StepRow({
   done,
   href: rowHref,
   sunday,
+  here,
 }: {
   step: ItineraryStep;
   active: boolean;
   done: boolean;
   href: string;
   sunday: boolean;
+  here: boolean;
 }) {
   const Icon = ICONS[step.kind];
   return (
@@ -301,12 +312,14 @@ function StepRow({
       <NavLink
         href={rowHref}
         className={cn(
-          "flex w-full cursor-pointer touch-manipulation gap-3 rounded-2xl p-3 text-left ring-1",
+          "flex w-full cursor-pointer touch-manipulation gap-2 rounded-2xl p-3 text-left ring-1",
           active && "bg-teal-50 ring-2 ring-teal-700",
+          here && !active && ["bg-white ring-2", zonePalette(step.zone).ring],
           done && "bg-zinc-100 ring-zinc-200 opacity-70",
-          !active && !done && "bg-white ring-zinc-200"
+          !active && !done && !here && "bg-white ring-zinc-200"
         )}
       >
+        <ZoneBar zone={step.zone} />
         <div className="w-12 shrink-0 pt-0.5 text-right">
           <div className="text-[15px] font-bold tabular-nums">{step.time}</div>
         </div>
@@ -347,7 +360,13 @@ function StepRow({
             )}
           </div>
           {step.zone && (
-            <div className="text-[12px] text-zinc-500">{step.zone}</div>
+            <div className="mt-1">
+              <ZoneTag
+                zone={step.zone}
+                action={zoneAction(step.kind, step.title)}
+                strong={active}
+              />
+            </div>
           )}
           {step.wait && (
             <div className="text-[13px] font-semibold text-zinc-800">
@@ -364,4 +383,21 @@ function StepRow({
       </NavLink>
     </li>
   );
+}
+
+function sameZoneBlock(
+  steps: ItineraryStep[],
+  current: number,
+  index: number,
+  doneSet: Set<number>
+) {
+  if (doneSet.has(index)) return false;
+  const here = steps[current]?.zone;
+  if (!here || !zonesMatch(here, steps[index]?.zone)) return false;
+  const lo = Math.min(index, current);
+  const hi = Math.max(index, current);
+  for (let i = lo; i <= hi; i++) {
+    if (!zonesMatch(here, steps[i].zone)) return false;
+  }
+  return true;
 }

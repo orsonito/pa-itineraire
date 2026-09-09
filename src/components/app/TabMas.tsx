@@ -3,8 +3,13 @@
 import { Badge } from "@/components/ui/badge";
 import { SOURCES } from "@/data/sources";
 import { ZONES, expressSavings, peakIfNoExpress } from "@/data/wait-model";
+import { advise } from "@/lib/live-plan";
+import { cn } from "@/lib/utils";
+import { zonePalette, zonesMatch } from "@/lib/zones";
 import { Download } from "lucide-react";
 import { useEffect, useState, useSyncExternalStore } from "react";
+import { ZoneTag } from "./ZoneMark";
+import { useVisit } from "./VisitProvider";
 
 type BeforeInstall = Event & { prompt: () => Promise<void> };
 
@@ -17,6 +22,8 @@ function standaloneSubscribe(cb: () => void) {
 export function TabMas() {
   const savings = expressSavings();
   const peak = peakIfNoExpress();
+  const { day, done, clock } = useVisit();
+  const hereZone = advise(day, done, clock).step.zone;
   const installed = useSyncExternalStore(
     standaloneSubscribe,
     () => window.matchMedia("(display-mode: standalone)").matches,
@@ -88,16 +95,29 @@ export function TabMas() {
       <section>
         <h2 className="mb-2 font-bold">Zonas</h2>
         <div className="space-y-2">
-          {ZONES.map((z) => (
-            <div
-              key={z.name}
-              className="rounded-2xl bg-white p-3 ring-1 ring-zinc-200"
-            >
-              <div className="text-sm font-bold">{z.name}</div>
-              <div className="text-[12px] text-zinc-600">{z.walk}</div>
-              <div className="text-[11px] text-zinc-500">{z.to}</div>
-            </div>
-          ))}
+          {ZONES.map((z) => {
+            const here = zonesMatch(hereZone, z.name);
+            return (
+              <div
+                key={z.name}
+                className={cn(
+                  "rounded-2xl bg-white p-3 ring-1",
+                  here ? ["ring-2", zonePalette(z.name).ring] : "ring-zinc-200"
+                )}
+              >
+                <div className="flex flex-wrap items-center gap-1.5">
+                  <ZoneTag zone={z.name} strong={here} />
+                  {here && (
+                    <span className="text-[10px] font-bold text-teal-800">
+                      AHORA
+                    </span>
+                  )}
+                </div>
+                <div className="mt-1 text-[12px] text-zinc-600">{z.walk}</div>
+                <div className="text-[11px] text-zinc-500">{z.to}</div>
+              </div>
+            );
+          })}
         </div>
       </section>
 
