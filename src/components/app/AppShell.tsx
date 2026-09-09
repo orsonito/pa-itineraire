@@ -2,6 +2,7 @@
 
 import { FollowItinerary } from "./FollowItinerary";
 import { WaitCards } from "./WaitCards";
+import { TabAhora } from "./TabAhora";
 import { TabDias } from "./TabDias";
 import { TabFerrari } from "./TabFerrari";
 import { TabMas } from "./TabMas";
@@ -15,7 +16,7 @@ import { cn } from "@/lib/utils";
 import { Footprints, MapPin } from "lucide-react";
 
 function Screen() {
-  const { tab, day, dayMeta, clock, at, done } = useVisit();
+  const { tab, day, dayMeta, clock, done } = useVisit();
   const step = advise(day, done, clock).step;
   const zone = step.zone;
   const pal = zonePalette(zone);
@@ -37,14 +38,14 @@ function Screen() {
             <div className="rounded-full bg-white/10 px-2.5 py-1 text-[11px] font-semibold">
               {dayMeta.label}
             </div>
-            {tab === "ruta" && (
+            {tab === "ahora" && (
               <div className="mt-1 text-[11px] tabular-nums text-teal-100">
-                {at ? `Simulando ${clock}` : clock}
+                {clock}
               </div>
             )}
           </div>
         </div>
-        {zone && (tab === "ruta" || tab === "colas") && (
+        {zone && (tab === "ahora" || tab === "colas") && (
           <div className="flex items-center gap-2 px-4 pb-2.5">
             <span
               className={cn(
@@ -60,6 +61,7 @@ function Screen() {
       </header>
 
       <main className="mx-auto max-w-lg px-3 pb-[calc(5.5rem+env(safe-area-inset-bottom))] pt-3">
+        {tab === "ahora" && <TabAhora />}
         {tab === "ruta" && <FollowItinerary />}
         {tab === "colas" && <WaitCards />}
         {tab === "dias" && <TabDias />}
@@ -73,6 +75,7 @@ function Screen() {
 }
 
 function tabTitle(tab: string) {
+  if (tab === "ahora") return "Recomendación";
   if (tab === "ruta") return "Tu ruta";
   if (tab === "colas") return "Colas";
   if (tab === "dias") return "Los 3 días";
@@ -84,23 +87,15 @@ export function AppShell({
   tab,
   day,
   allDone,
-  at,
   clock,
 }: {
   tab: TabId;
   day: DayId;
   allDone: Record<DayId, number[]>;
-  at: string | null;
   clock: string;
 }) {
   return (
-    <VisitProvider
-      tab={tab}
-      day={day}
-      allDone={allDone}
-      at={at}
-      clock={clock}
-    >
+    <VisitProvider tab={tab} day={day} allDone={allDone} clock={clock}>
       <Screen />
     </VisitProvider>
   );

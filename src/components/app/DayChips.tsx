@@ -7,7 +7,7 @@ import { NavLink } from "./NavLink";
 import { useVisit } from "./VisitProvider";
 
 export function DayChips() {
-  const { tab, day, allDone, at } = useVisit();
+  const { tab, day, allDone } = useVisit();
   const ids: DayId[] = ["sun", "mon", "tue"];
   return (
     <div className="flex gap-2">
@@ -17,7 +17,7 @@ export function DayChips() {
         return (
           <NavLink
             key={id}
-            href={href(tab, id, allDone, at)}
+            href={href(tab, id, allDone)}
             ariaCurrent={active ? "page" : undefined}
             className={cn(
               "min-h-11 flex-1 cursor-pointer touch-manipulation rounded-xl px-2 py-2 text-center transition",

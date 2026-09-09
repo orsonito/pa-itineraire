@@ -1,8 +1,8 @@
 import type { DayId } from "@/data/wait-model";
 
-export type TabId = "ruta" | "colas" | "dias" | "ferrari" | "mas";
+export type TabId = "ahora" | "ruta" | "colas" | "dias" | "ferrari" | "mas";
 
-const TABS: TabId[] = ["ruta", "colas", "dias", "ferrari", "mas"];
+const TABS: TabId[] = ["ahora", "ruta", "colas", "dias", "ferrari", "mas"];
 const DAY_IDS: DayId[] = ["sun", "mon", "tue"];
 
 export const EMPTY_DONE: Record<DayId, number[]> = { sun: [], mon: [], tue: [] };
@@ -58,12 +58,10 @@ export function withDone(
 export function href(
   tab: TabId,
   day: DayId,
-  done: Record<DayId, number[]> = EMPTY_DONE,
-  at?: string | null
+  done: Record<DayId, number[]> = EMPTY_DONE
 ): string {
   const q = new URLSearchParams({ tab, day });
   const packed = serializeDone(done);
   if (packed) q.set("done", packed);
-  if (at) q.set("at", at);
   return `/?${q.toString()}`;
 }

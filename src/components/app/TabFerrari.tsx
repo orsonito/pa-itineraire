@@ -8,7 +8,7 @@ import { NavLink } from "./NavLink";
 import { useVisit } from "./VisitProvider";
 
 export function TabFerrari() {
-  const { allDone, at } = useVisit();
+  const { allDone } = useVisit();
   return (
     <div className="space-y-4">
       <div className="rounded-2xl bg-red-800 p-4 text-white">
@@ -21,7 +21,7 @@ export function TabFerrari() {
           Express 10 de PortAventura <strong>no vale</strong>
         </p>
         <NavLink
-          href={href("ruta", "mon", allDone, at)}
+          href={href("ruta", "mon", allDone)}
           className="mt-3 flex min-h-11 w-full cursor-pointer items-center justify-center rounded-xl bg-white text-sm font-bold text-red-800"
         >
           Ver en la ruta del lunes

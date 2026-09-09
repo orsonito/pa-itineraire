@@ -8,7 +8,7 @@ import { NavLink } from "./NavLink";
 import { useVisit } from "./VisitProvider";
 
 export function TabDias() {
-  const { day, allDone, at } = useVisit();
+  const { day, allDone } = useVisit();
   return (
     <div className="space-y-4">
       <p className="text-[13px] text-zinc-600">
@@ -22,7 +22,7 @@ export function TabDias() {
           return (
             <NavLink
               key={id}
-              href={href("ruta", id, allDone, at)}
+              href={href("ruta", id, allDone)}
               className={cn(
                 "block w-full cursor-pointer touch-manipulation rounded-2xl p-4 text-left ring-1",
                 active
