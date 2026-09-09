@@ -2,10 +2,10 @@
 
 import { Badge } from "@/components/ui/badge";
 import { ITINERARIES, type ItineraryStep } from "@/data/itineraries";
+import { href, withDone } from "@/lib/nav";
 import { cn } from "@/lib/utils";
 import {
   Check,
-  ChevronDown,
   FerrisWheel,
   Footprints,
   Info,
@@ -14,8 +14,8 @@ import {
   Undo2,
   Utensils,
 } from "lucide-react";
-import { useMemo, useState } from "react";
 import { DayChips } from "./DayChips";
+import { NavLink } from "./NavLink";
 import { useVisit } from "./VisitProvider";
 
 const ICONS = {
@@ -33,14 +33,20 @@ const SUBTITLES: Record<string, string> = {
 };
 
 export function FollowItinerary() {
-  const { day, dayMeta, done, markDone, undo, resetDay } = useVisit();
+  const { tab, day, dayMeta, done, allDone } = useVisit();
   const steps = ITINERARIES[day];
-  const doneSet = useMemo(() => new Set(done), [done]);
+  const doneSet = new Set(done);
   const current = steps.findIndex((_, i) => !doneSet.has(i));
   const atEnd = current === -1;
   const step = atEnd ? steps[steps.length - 1] : steps[current];
   const next = !atEnd ? steps[current + 1] : undefined;
-  const [showDone, setShowDone] = useState(false);
+  const markCurrent = href(tab, day, withDone(allDone, day, [...done, current]));
+  const undoHref = href(
+    tab,
+    day,
+    withDone(allDone, day, done.slice(0, -1))
+  );
+  const resetHref = href(tab, day, withDone(allDone, day, []));
 
   return (
     <div className="space-y-3">
@@ -101,14 +107,13 @@ export function FollowItinerary() {
                 </span>
               </div>
             )}
-            <button
-              type="button"
-              onClick={() => markDone(current)}
+            <NavLink
+              href={markCurrent}
               className="mt-4 flex min-h-12 w-full cursor-pointer touch-manipulation items-center justify-center gap-2 rounded-xl bg-amber-400 text-base font-bold text-teal-950 active:scale-[0.99]"
             >
               <Check className="size-5" />
               Hecho · siguiente
-            </button>
+            </NavLink>
           </>
         )}
         {atEnd && (
@@ -120,52 +125,52 @@ export function FollowItinerary() {
       </div>
 
       <div className="flex gap-2">
-        <button
-          type="button"
-          onClick={undo}
-          disabled={done.length === 0}
-          className="flex min-h-11 flex-1 touch-manipulation items-center justify-center gap-1 rounded-xl bg-white text-[13px] font-semibold ring-1 ring-zinc-200 disabled:opacity-40"
-        >
-          <Undo2 className="size-4" />
-          Deshacer
-        </button>
-        <button
-          type="button"
-          onClick={resetDay}
-          className="flex min-h-11 flex-1 touch-manipulation items-center justify-center gap-1 rounded-xl bg-white text-[13px] font-semibold ring-1 ring-zinc-200"
+        {done.length === 0 ? (
+          <span className="flex min-h-11 flex-1 items-center justify-center gap-1 rounded-xl bg-white text-[13px] font-semibold ring-1 ring-zinc-200 opacity-40">
+            <Undo2 className="size-4" />
+            Deshacer
+          </span>
+        ) : (
+          <NavLink
+            href={undoHref}
+            className="flex min-h-11 flex-1 cursor-pointer touch-manipulation items-center justify-center gap-1 rounded-xl bg-white text-[13px] font-semibold ring-1 ring-zinc-200"
+          >
+            <Undo2 className="size-4" />
+            Deshacer
+          </NavLink>
+        )}
+        <NavLink
+          href={resetHref}
+          className="flex min-h-11 flex-1 cursor-pointer touch-manipulation items-center justify-center gap-1 rounded-xl bg-white text-[13px] font-semibold ring-1 ring-zinc-200"
         >
           <RotateCcw className="size-4" />
           Reiniciar día
-        </button>
+        </NavLink>
       </div>
 
       <ol className="space-y-2">
-        {steps.map((s, i) => {
-          if (doneSet.has(i) && !showDone) return null;
-          return (
-            <StepRow
-              key={`${s.time}-${i}`}
-              step={s}
-              active={i === current}
-              done={doneSet.has(i)}
-              onToggle={() => markDone(i)}
-            />
-          );
-        })}
-      </ol>
-
-      {done.length > 0 && (
-        <button
-          type="button"
-          onClick={() => setShowDone((v) => !v)}
-          className="flex min-h-11 w-full items-center justify-center gap-1 text-[13px] font-semibold text-zinc-500"
-        >
-          <ChevronDown
-            className={cn("size-4 transition", showDone && "rotate-180")}
+        {steps.map((s, i) => (
+          <StepRow
+            key={`${s.time}-${i}`}
+            step={s}
+            href={
+              doneSet.has(i)
+                ? href(
+                    tab,
+                    day,
+                    withDone(
+                      allDone,
+                      day,
+                      done.filter((x) => x !== i)
+                    )
+                  )
+                : href(tab, day, withDone(allDone, day, [...done, i]))
+            }
+            active={i === current}
+            done={doneSet.has(i)}
           />
-          {showDone ? "Ocultar hechos" : `Ver hechos (${done.length})`}
-        </button>
-      )}
+        ))}
+      </ol>
     </div>
   );
 }
@@ -174,21 +179,20 @@ function StepRow({
   step,
   active,
   done,
-  onToggle,
+  href: rowHref,
 }: {
   step: ItineraryStep;
   active: boolean;
   done: boolean;
-  onToggle: () => void;
+  href: string;
 }) {
   const Icon = ICONS[step.kind];
   return (
     <li>
-      <button
-        type="button"
-        onClick={onToggle}
+      <NavLink
+        href={rowHref}
         className={cn(
-          "flex w-full touch-manipulation gap-3 rounded-2xl p-3 text-left ring-1",
+          "flex w-full cursor-pointer touch-manipulation gap-3 rounded-2xl p-3 text-left ring-1",
           active && "bg-teal-50 ring-2 ring-teal-700",
           done && "bg-zinc-100 ring-zinc-200 opacity-70",
           !active && !done && "bg-white ring-zinc-200"
@@ -238,7 +242,7 @@ function StepRow({
             </div>
           )}
         </div>
-      </button>
+      </NavLink>
     </li>
   );
 }

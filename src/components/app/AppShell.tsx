@@ -51,9 +51,17 @@ function tabTitle(tab: string) {
   return "Más";
 }
 
-export function AppShell({ tab, day }: { tab: TabId; day: DayId }) {
+export function AppShell({
+  tab,
+  day,
+  allDone,
+}: {
+  tab: TabId;
+  day: DayId;
+  allDone: Record<DayId, number[]>;
+}) {
   return (
-    <VisitProvider tab={tab} day={day}>
+    <VisitProvider tab={tab} day={day} allDone={allDone}>
       <Screen />
     </VisitProvider>
   );

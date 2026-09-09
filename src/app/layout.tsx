@@ -1,6 +1,5 @@
 import type { Metadata, Viewport } from "next";
 import { Fraunces, Geist } from "next/font/google";
-import Script from "next/script";
 import { RegisterSW } from "@/components/app/RegisterSW";
 import "./globals.css";
 
@@ -47,9 +46,6 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       lang="es"
       className={`${geist.variable} ${fraunces.variable} h-full antialiased`}
     >
-      <head>
-        <Script src="/kill-sw.js" strategy="beforeInteractive" />
-      </head>
       <body className="min-h-dvh flex flex-col">
         <RegisterSW />
         {children}

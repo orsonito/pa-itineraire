@@ -21,7 +21,7 @@ const TABS: { id: TabId; label: string; icon: typeof Timer }[] = [
 ];
 
 export function BottomNav() {
-  const { tab, day } = useVisit();
+  const { tab, day, allDone } = useVisit();
   return (
     <nav
       className="fixed inset-x-0 bottom-0 z-50 border-t border-teal-900/20 bg-teal-900 pb-[env(safe-area-inset-bottom)] text-teal-100"
@@ -34,7 +34,7 @@ export function BottomNav() {
           return (
             <NavLink
               key={item.id}
-              href={href(item.id, day)}
+              href={href(item.id, day, allDone)}
               ariaCurrent={active ? "page" : undefined}
               className={cn(
                 "relative z-50 flex min-h-[56px] w-full cursor-pointer touch-manipulation flex-col items-center justify-center gap-0.5 pt-1",
